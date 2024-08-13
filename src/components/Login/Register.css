@@ -1,0 +1,120 @@
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../assets/Gilroy.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Gopher';
+    src: url('../assets/Gopher.ttf') format('truetype');
+}
+
+.Register {
+    display: flex;
+    justify-content: center;
+    background-color: #ababab27;
+    height: 100vh;
+}
+
+.Register_header {
+    width: 450px;
+    height: 500px;
+    position: absolute;
+    margin-top: 105px;
+    padding-top: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid #C209C1;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.Register_header h1 {
+    font-size: 40px;
+    color: #C209C1;
+}
+
+.Register_header h2 {
+    font-size: 15px;
+    font-family: 'Arial';
+    font-weight: 400;
+}
+
+.Register_header_form {
+    height: 500px;
+    width: 400px;
+
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.Register_header_form h5 {
+    font-family: 'Gopher';
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.Register_header_form a {
+    font-family: 'Gopher';
+    font-size: 15px;
+    margin-left: 3px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.Register_header_form a:active {
+    color: blue;
+}
+
+.Register_header_form_detail {
+    display: flex;
+    flex-direction: column;
+
+    width: 310px;
+    height: 80px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.Register_header_form_detail span {
+    margin: 3px 0px 0px 10px;
+    font-size: 12px;
+    color: red;
+}
+
+.Register_header_form_login {
+    height: 45px;
+    width: 81%;
+    margin: 0px 10%;
+    margin-top: -5px;
+    border: none;
+    border-radius: 20px;
+    background: #C209C1;
+    font-size: 18px;
+    font-family: 'Gilroy';
+    color: white;
+}
+
+.Register_header_form_login:hover {
+    cursor: pointer;
+}
+
+.Register_header_form_detail input {
+    width: 100%;
+    height: 40px;
+    border: 2px solid #CECECE;
+    border-radius: 10px;
+
+    padding-left: 10px;
+}
+
+.Register_header_inform {
+    margin-bottom: 30px;
+    color: #C209C1;
+    font-size: 15px;
+}
+

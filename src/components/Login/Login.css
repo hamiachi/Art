@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../assets/Gilroy.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Gopher';
+    src: url('../assets/Gopher.ttf') format('truetype');
+}
+
+.Login {
+    display: flex;
+    justify-content: center;
+    background-color: #ababab27;
+    height: 100vh;
+}
+
+.Login_header {
+    width: 450px;
+    height: 500px;
+    position: absolute;
+    margin-top: 105px;
+    padding-top: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid #C209C1;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.Login_header h1 {
+    font-size: 40px;
+    color: #C209C1;
+}
+
+.Login_header h2 {
+    font-size: 15px;
+    font-family: 'Arial';
+    font-weight: 400;
+}
+
+.Login_header_form {
+    height: 500px;
+    width: 400px;
+
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.Login_header_form h5 {
+    font-family: 'Gopher';
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.Login_header_form a {
+    font-family: 'Gopher';
+    font-size: 15px;
+    margin-left: 3px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.Login_header_form a:active {
+    color: blue;
+}
+
+.Login_header_form_detail {
+    display: flex;
+    align-items:start;
+    flex-direction: column;
+
+    width: 310px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 10px;
+}
+
+.Login_header_form_detail label{
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.Login_header_form_login {
+    height: 45px;
+    width: 81%;
+    margin: 0px 10%;
+    margin-top: 20px;
+    border: none;
+    border-radius: 20px;
+    background: #C209C1;
+    font-size: 18px;
+    font-family: 'Gilroy';
+    color: white;
+    margin-bottom: 10px;
+}
+
+.Login_header_form_login:hover {
+    cursor: pointer;
+}
+
+.Login_header_form_detail input {
+    width: 100%;
+    height: 40px;
+    border: 2px solid #CECECE;
+    border-radius: 10px;
+
+    padding-left: 10px;
+}
+
+.Login_header_form_line {
+    display: flex;
+    justify-content: center;
+}
+
+.Login_header_form_line hr{
+    width: 40px;
+    height: 0px;
+    color: black;
+    margin: 0px 10px;
+    margin-top: 10px;
+}
+
+.Login_header_form_auth {
+    width: 81%;
+    height: 45px;
+    margin: 10px 10%;
+    display: flex;
+    border-radius: 20px;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Login_header_form_auth:hover {
+    cursor: pointer;
+}
+
+.Login_header_form_auth p {
+    margin-left: 15px;
+    font-family: 'Gilroy';
+    font-size: 15px;
+}
+

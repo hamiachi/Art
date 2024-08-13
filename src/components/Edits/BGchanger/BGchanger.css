@@ -1,0 +1,62 @@
+.BGchanger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.BGchanger h1 {
+    font-size: 42px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-family: 'Gilroy';
+}
+
+.BGchanger h1 span {
+    background: linear-gradient(to right, #3F0BBC, #FF34F9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.BGchanger p {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    width: 1260px;
+    font-family: 'Gopher';
+}
+
+.BGchanger_function {
+    display: flex;
+    justify-content: space-evenly;
+
+    width: 100%;
+    margin-top: 70px;
+    height: 380px;
+    transition: 1s;
+}
+
+.BGchanger_function_main:hover {
+    cursor: pointer;
+}
+
+.image, .BGchanger_function_main {
+  transition: all 1s ease;
+}
+
+.BGchanger_function_main:hover {
+    cursor: pointer;
+}
+
+.image.animate {
+    transform: translateX(310px);
+    opacity: 0;
+    z-index: 1;
+}
+  
+.BGchanger_function_main.animate {
+    transform: translateX(-310px);
+    z-index: 2;
+}
+

@@ -1,0 +1,259 @@
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../../assets/Gilroy.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Gopher';
+    src: url('../../assets/Gopher.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    display: flex;
+    height: 97.5vh;
+    margin: 0;
+    color: black;
+    width: 100%;
+    overflow: hidden;
+}
+
+.gap_18 {
+    gap: 30px;
+    background: linear-gradient(to right, #3F0BBC, #FF34F9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Gilroy';
+    margin-bottom: 10px;
+    margin-right: 40px;
+    transition: 1s;
+}
+
+.flex{
+    display: flex;
+}
+
+.prompt{
+    margin-left: 25px;
+    width: 350px;
+    height: 80vh;
+    border-radius: 10px;
+    border: 1px solid gainsboro;
+    margin-right: 25px;
+    padding: 15px;
+    margin-top: 90px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.selection p:hover {
+    cursor: pointer;
+}
+
+.input_prompt{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    height: 150px;
+    width: 350px;
+    border-radius: 10px;
+    padding: 0px;
+}
+
+.input_prompt textarea{
+    /* border: none; */
+    height: 70px;
+    resize: none;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+textarea
+
+.input_prompt textarea::placeholder  {
+    padding: 5px 10px;
+}
+
+.style-select {
+    height: 35px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 16px;
+    border: none;
+    padding: 5px 10px;
+    font-family: 'Gopher';
+    font-weight: 600;
+}
+
+.style-select:hover {
+    cursor: pointer;
+}
+
+.style-select option {
+    color: #C209C1;
+    padding: 10px;
+    font-family: 'Gopher';
+    font-weight: 600;
+}
+
+.select-ratio p {
+    margin-bottom: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+    font-family: 'Gilroy';
+}
+
+.aspect-ratio {
+    height: 35px;
+    width: 100%;
+    padding-left: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.number-image {
+    margin-top: 30px;
+}
+
+.number-image p {
+    margin-bottom: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+    font-family: 'Gilroy';
+}
+
+.number{
+    width: 100%;
+    gap: 10px;
+}
+
+.box {
+    width: 32px;
+    height: 32px;
+    border: 2px solid transparent;
+    background-color: #C209C1;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.box:hover {
+    cursor: pointer;
+}
+
+.box:active {
+    border: 2px solid black;
+    color: black;
+}
+
+.upgrade {
+    border-radius: 5px;
+    height: 35px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.upgrade_span {
+    color: red;
+    font-weight: 600;
+}
+
+.generate{
+    margin-top: 30px;
+}
+
+.credit{
+    margin-bottom: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+    font-family: 'Gilroy';
+}
+
+.create-button {
+    height: 50px;
+    font-size: 20px;
+    background-color: #C209C1;
+    color: white;
+    font-weight: 600;
+    font-family: 'Gilroy';
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-button:hover {
+    cursor: pointer;
+}
+
+img {
+    height: 300px;
+    width: 300px;
+}
+
+.image_generate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 90px;
+    width: 70vw;
+    border-radius: 10px;
+    border: 1px solid gainsboro;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.shape {
+    border: 2px solid transparent;
+}
+
+.s11 {
+    width: 500px;
+    height: 500px;
+}
+
+.s45 {
+    width: 400px;
+    height: 500px;
+}
+
+.s54 {
+    width: 500px;
+    height: 400px;
+}
+
+.s23 {
+    width: 333px;
+    height: 500px;
+}
+
+.s32 {
+    width: 600px;
+    height: 400px;
+}
+
+.s47 {
+    width: 280px;
+    height: 500px;
+}
+
+.s74 {
+    width: 700px;
+    height: 400px;
+}

@@ -1,0 +1,9 @@
+.box {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 2px rgba(161, 161, 161, 0.5);
+}
+
+button{
+    border-radius: 10px;
+}

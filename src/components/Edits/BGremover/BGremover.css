@@ -1,0 +1,59 @@
+.BGremover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.BGremover h1 {
+    font-size: 42px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-family: 'Gilroy';
+}
+
+.BGremover h1 span {
+    background: linear-gradient(to right, #3F0BBC, #FF34F9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.BGremover p {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'Gopher';
+}
+
+.BGremover p span {
+    font-weight: 700;
+}
+
+.BGremover_function {
+    display: flex;
+    justify-content: space-evenly;
+
+    width: 100%;
+    margin-top: 70px;
+    height: 380px;
+}
+
+.image,
+.BGremover_function_main {
+  transition: all 1s ease;
+}
+
+.BGremover_function_main:hover {
+    cursor: pointer;
+}
+
+.image.animate {
+    transform: translateX(310px);
+    opacity: 0;
+    z-index: 1;
+}
+  
+.BGremover_function_main.animate {
+    transform: translateX(-310px);
+    z-index: 2;
+}

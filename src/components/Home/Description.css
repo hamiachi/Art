@@ -1,0 +1,36 @@
+.Description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 50px;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    border-radius: 20px;
+    padding: 30px 0px;
+    background: linear-gradient(to right, #FFFFFF, #2B66F0);
+}
+
+.Description_content {
+    margin-right: 30px
+}
+
+.Description_content h1 {
+    font-size: 50px;
+    font-family: 'Gilroy';
+}
+
+.Description_content h2 {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Gilroy';
+    margin-bottom: 10px;
+}
+
+.Description_content p {
+    font-size: 15px;
+    font-family: 'Gopher';
+    width: 480px;
+}

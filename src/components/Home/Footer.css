@@ -1,0 +1,50 @@
+.Footer {
+    margin-top: 70px;
+    width: 100%;
+    height: 230px;
+    background: #E4E4E4;
+    padding-top: 70px;
+}
+
+.Footer h1 {
+    margin-left: 105px;
+    font-family: 'Geometry';
+    /* color: #C209C1; */
+    font-size: 50px;
+}
+
+.Footer_content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 35px;
+    margin-left: 105px;
+    font-family: 'Gilroy';
+}
+
+.Footer_content p {
+    margin-bottom: 5px;
+}
+
+.Footer_content_icon {
+    margin-right: 105px;
+}
+
+.ico {
+    height: 25px;
+    width: 25px;
+    margin-left: 25px;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.ico:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+hr {
+    width: 1310px;
+    margin-top: 30px;
+    margin-left: 105px;
+}

@@ -1,0 +1,194 @@
+.Services {
+    background-color: black;
+    padding-top: 80px;
+    min-height: 80vh;
+    max-width: 100%;
+}
+
+.Services h1 {
+    color: white;
+    font-family: 'Gilroy';
+    font-size: 60px;
+    margin-left: 100px;
+    margin-bottom: 15px;
+}
+
+.Services h1 span {
+    color: #00C5C3;
+}
+
+.Services p {
+    color: white;
+    width: 800px;
+    margin-left: 100px;
+    font-family: 'Gopher';
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.Services_design {
+    display: flex;
+}
+
+.Services_design ul {
+    color: white;
+    margin-left: 100px;
+    margin-bottom: 45px;
+    list-style-type: none;
+    margin-top: 20px;
+}
+
+.Services_design ul li {
+    width: 300px;
+    height: 50px;
+    margin-bottom: 10px;
+    font-family: 'Gilroy';
+    font-size: 30px;
+    color: #4C4C4C;
+    transition: 0.5s;
+}
+
+.Services_design ul li:hover {
+    cursor: pointer;
+    color: white;
+    font-size: 35px;
+}
+
+.Services button {
+    font-family: Arial;
+    color: white;
+    background-color: #C209C1;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 20px;
+    margin-left: 100px;
+    margin-bottom: 70px;
+    transition: 0.3s;
+}
+
+.Services button:hover {
+    cursor: pointer;
+    background-color: #920792;
+}
+
+.Services_design_pic {
+    width: 600px;
+    height: 450px;
+    /* border: 2px solid white; */
+    margin-left: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Services_design_pic_fashion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.Services_design_pic_fashion_1 {
+    display: flex;
+}
+
+.Services_design_pic_fashion_1 img {
+    margin: 15px 15px;
+    border-radius: 5px;
+    border: 2px solid white;
+}
+
+.Services_design_pic_estate {
+    display: flex;
+}
+
+.Services_design_pic_estate img {
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 2px solid white;
+}
+
+.Services_design_pic_food {
+    display: flex;
+}
+
+.Services_design_pic_food img {
+    margin-right: 12px;
+    border-radius: 5px;
+    border: 2px solid white;
+}
+
+.Services_design_pic_food div img {
+    margin-bottom: 10px;
+    border: 2px solid white;
+}
+
+.Services_design_pic_interior {
+    display: flex;
+}
+
+.Services_design_pic_interior img {
+    z-index: 800;
+    border-radius: 5px;
+    border: 2px solid white;
+}
+
+.Services_design_pic_interior div img {
+    z-index: 799;
+    margin-left: -300px;
+    margin-top: 50px;
+    border-radius: 5px;
+    border: 2px solid white;
+}
+
+.Services_design_pic_health {
+    display: flex;
+}
+
+.Services_design_pic_health img {
+    border-radius: 5px;
+    border: 2px solid white;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.Services_design_pic_health div img {
+margin-bottom: 7px;
+}
+
+.Services_design_pic_education {
+    display: flex;
+}
+
+.Services_design_pic_education img {
+    border-radius: 5px;
+    border: 2px solid white;
+    margin: 0 10px;
+}
+
+.Services_design_pic_enter {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Services_design_pic_enter img {
+    border-radius: 5px;
+    border: 2px solid white;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.Services_design_pic_enter div {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#active {
+    color: white;
+    font-size: 35px;
+}

@@ -1,0 +1,172 @@
+@font-face {
+    font-family: 'Geometry';
+    src: url('../assets/Geometry.otf') format('opentype');
+}
+
+.EditNav {
+    border-bottom: 2px solid #F2F2F2;
+    height: 73px;
+
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    z-index: 1000;
+}
+
+.EditNav h2 {
+    margin-left: 105px;
+    font-family: 'Geometry';
+    color: #C209C1;
+    font-size: 32px;
+}
+
+.EditNav a {
+    text-decoration: none;
+}
+
+.EditNav a:hover {
+    cursor: pointer;
+}
+
+.EditNav_functions {
+    display: flex;
+    list-style-type: none;
+    margin-left: 65px;
+}
+
+.EditNav_functions li{
+    display: flex;
+    align-items: center;
+    padding-right: 15px;
+    padding-left: 5px;
+    margin-right: 8px;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4C4C4C;
+    border: 2px solid transparent;
+    height: 30px;
+    transition: border-bottom 0s, color 0.5s;
+}
+
+.EditNav_functions li:hover {
+    color: #6E1FF0;
+    cursor: pointer;
+    border-bottom: 2px solid #6E1FF0;
+    /* transition: 0.5s; */
+}
+
+.EditNav_button {
+    margin-left: 155px;
+    display: flex;
+}
+
+.EditNav_button_icon {
+    background-color: #F2F2F2;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    transition: 0.2s;
+}
+
+.EditNav_button_icon:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.Nabar_button_login {
+    display: flex;
+}
+
+.EditNav_button_1 {
+    font-family: Arial;
+    color: white;
+    background-color: #C209C1;
+    font-weight: 600;
+    height: 40px;
+    padding: 1px 8px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 7px;
+}
+
+.EditNav_button_user {
+    display: flex;
+    height: 40px;
+}
+
+.EditNav_button_profile {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100px;
+    width: 100px;
+}
+
+.EditNav_button_2 {
+    font-family: Arial;
+    color: white;
+    background-color: black;
+    font-weight: 600;
+    padding: 1px 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+.EditNav_button_1:hover, .EditNav_button_2:hover {
+    cursor: pointer;
+}
+
+.EditNav_token {
+    height: 35px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.EditNav_token:hover {
+    cursor: pointer;
+}
+
+.EditNav_options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 33px;
+    width: 120px;
+}
+
+.EditNav_options p {
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4C4C4C;
+    margin-bottom: 10px;
+    margin-top: -10px;
+}
+
+.EditNav_options button {
+    height: 30px;
+    width: 70px;
+    font-family: Arial;
+    color: white;
+    font-weight: 600;
+    background-color: black;
+    margin-bottom: -20px;
+    border-radius: 5px;
+    border: none;
+}
+
+.EditNav_options button:hover {
+    cursor: pointer;
+}
+

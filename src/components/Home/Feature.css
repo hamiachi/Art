@@ -1,0 +1,65 @@
+.Feature {
+    width: 100%;
+}
+
+.Feature_AI {
+    margin-left: 100px;
+    margin-top: 60px;
+}
+
+.Feature_AI {
+    margin-left: 100px;
+    margin-top: 60px;
+}
+
+.Feature_AI p {
+    font-family: 'Gopher';
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.Feature_AI h1 {
+    font-weight: 900;
+    font-family: 'Gilroy';
+    font-size: 60px;
+    margin-bottom: 25px;
+}
+
+.Feature_AI_content {
+    display: flex;
+}
+
+.Feature_AI_content div p {
+    width: 500px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 30px;
+
+}
+
+.Feature_AI_content div p span {
+    font-weight: bold;
+}
+
+.Feature_AI_content div button {
+    font-family: Arial;
+    color: white;
+    background-color: #C209C1;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 20px;
+    margin-top: 35px;
+    transition: 0.3s;
+}
+
+.Feature_AI_content div button:hover {
+    cursor: pointer;
+    background-color: #920792;
+}
+
+.Feature_AI_content img {
+    border-radius: 20px;
+    margin-left: 20px;
+}
