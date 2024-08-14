@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../Home/Navbar';
 import axios from 'axios';
 import './Register.css'
