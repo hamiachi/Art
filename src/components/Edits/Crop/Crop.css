@@ -1,0 +1,60 @@
+* {
+    padding: 0;
+    margin: 0;
+  }
+
+.Crop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.Crop h1 {
+  font-size: 42px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-family: 'Gilroy';
+  margin-top: 30px;
+}
+
+.Crop h1 span {
+  background: linear-gradient(to right, #3F0BBC, #FF34F9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.Crop p {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Gopher';
+}
+
+.Crop_feature {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.image,
+.Crop_function_main {
+  transition: all 1s ease;
+}
+
+.Crop_function_main:hover {
+    cursor: pointer;
+}
+
+.image.animate {
+    transform: translateX(340px);
+    opacity: 0;
+    z-index: 1;
+}
+  
+.Crop_function_main.animate {
+    transform: translateX(-340px);
+    z-index: 2;
+}
+
