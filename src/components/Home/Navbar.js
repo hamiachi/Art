@@ -96,26 +96,21 @@ const Navbar = () => {
     }
   }
 
-  const goToGener = () => {
-    const tokenCurrent = sessionStorage.getItem('token');
-    if (tokenCurrent === null || tokenCurrent === '') {
-      router.push('/generator');
-    } else {
-      router.push('/');
-    }
-  }
-
-  const goToSupport = () => {
-      router.push('/learning');
-  }
-
-  const goToCommunity = () => {
-    router.push('/community');
+const goToGener = () => {
+  router.push('/generator');
 }
 
-  const goToPricing = () => {
-    router.push('/price');
-  }
+const goToSupport = () => {
+  router.push('/learning');
+}
+
+const goToCommunity = () => {
+  router.push('/community');
+}
+
+const goToPricing = () => {
+  router.push('/price');
+}
 
   return (
     <div className='Navbar'>

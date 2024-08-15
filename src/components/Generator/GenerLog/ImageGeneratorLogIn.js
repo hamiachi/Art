@@ -15,6 +15,7 @@ const ImageGeneratorLogIn = () => {
   const [imageNumberLimit, setImageNumberLimit] = useState(10);
   const [shape, setShape] = useState('s11');
   const router = useRouter();
+  const secretKey = process.env.GETIMG_KEY;
 
   useEffect(() => {
     // Kiểm tra nếu trang chưa được reload, thì reload nó
@@ -60,7 +61,7 @@ const ImageGeneratorLogIn = () => {
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          authorization: 'Bearer key-1n8Yi2cd8aLgu8KBfz4W1rTRd2aiUE7sLlQGf1wlgIagYwHV0dMByvYNAzkGfwK2i6NpLUQwpQ1TZUNA1tHLBKWW78kK1Fpd'
+          authorization: secretKey
         },
         data: { style: style, prompt: `${inputRef.current.value}`, aspect_ratio: ratio, response_format: 'url' }
       };

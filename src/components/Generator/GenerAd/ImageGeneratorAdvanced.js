@@ -24,6 +24,7 @@ const ImageGeneratorAdvanced = () => {
     const scaleValue = useSelector((state) => state.options.setScale)
     const sampler = useSelector((state) => state.options.setSampler)
     const router = useRouter();
+    const secretKey = process.env.GETIMG_KEY;
 
     const [model, setModel] = useState('juggernaut-xl-v10')
     const [randomSeed, setRandomSeed] = useState(0)
@@ -84,7 +85,7 @@ const ImageGeneratorAdvanced = () => {
             headers: {
                 accept: 'application/json',
                 'content-type': 'application/json',
-                authorization: 'Bearer key-4iVTZj9JxaOyAOssQZ4HSAQdI2mHv9WfhCLaMJsRQBKbu5ChURKmo084LWrSmEjcWmWFqNm5aXhoVGM7g38rG7f7ajk30DZb'
+                authorization: secretKey
             },
             data: {
                 model: selectedModel ? selectedModel : model,

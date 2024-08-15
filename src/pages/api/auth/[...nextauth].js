@@ -46,6 +46,7 @@ export default NextAuth({
           username: user.name,
           email: user.email,
           password: '', // No password needed as it's an OAuth user
+          pics: [],
         });
       }
       return true;
