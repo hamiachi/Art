@@ -28,7 +28,7 @@ import SecurityUpdateIcon from '@mui/icons-material/SecurityUpdate';
 
 const civitai = new Civitai({
     auth: "366308d6148e5d146f5dd67f8f97ba31",
-    
+
 });
 
 
@@ -36,16 +36,16 @@ const civitai = new Civitai({
 const ImageGeneratorAdvanced = () => {
 
     const originalModel = {
-        'urn:air:sdxl:checkpoint:civitai:133005@471120' : {
+        'urn:air:sdxl:checkpoint:civitai:133005@471120': {
             title: 'JuggernautXL',
         },
-        'urn:air:sdxl:checkpoint:civitai:139562@361593' : {
+        'urn:air:sdxl:checkpoint:civitai:139562@361593': {
             title: 'RealVisXL'
         },
-        'urn:air:sdxl:checkpoint:civitai:260267@403131' : {
+        'urn:air:sdxl:checkpoint:civitai:260267@403131': {
             title: "Animagine XL"
         },
-        'urn:air:sd1:checkpoint:civitai:4384@128713' : {
+        'urn:air:sd1:checkpoint:civitai:4384@128713': {
             title: 'DreamShaper'
         }
     }
@@ -308,55 +308,56 @@ const ImageGeneratorAdvanced = () => {
                             <>
                                 {isFinal ? (
                                     <>
-                                        
+
                                         <Box sx={{ width: '100%', height: '100%' }}>
 
 
                                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                                 <Box display="flex">
                                                     <IconButton>
-                                                        <FirstPageIcon/>
+                                                        <FirstPageIcon />
                                                     </IconButton>
-                                                    <Typography sx ={{alignSelf:'center'}} >{inputRef.current.value}</Typography>
+                                                    <Typography sx={{ alignSelf: 'center' }} >{inputRef.current.value}</Typography>
                                                     <IconButton>
-                                                        <ContentCopyIcon/>
+                                                        <ContentCopyIcon />
 
                                                     </IconButton>
                                                 </Box>
 
-                                                <Box display = 'flex'>
-                                                    <Typography sx ={{alignSelf:'center', paddingRight: '25px'}}>
+                                                <Box display='flex'>
+                                                    <Typography sx={{ alignSelf: 'center', paddingRight: '25px' }}>
                                                         {model ? originalModel[model].title : selectedModel.title}
                                                     </Typography>
 
 
-                                                    <PhotoLibraryIcon sx ={{alignSelf:'center', paddingRight:'5px'}}/>
-                                                    <Typography sx ={{alignSelf:'center', paddingRight: '25px'}}>
+                                                    <PhotoLibraryIcon sx={{ alignSelf: 'center', paddingRight: '5px' }} />
+                                                    <Typography sx={{ alignSelf: 'center', paddingRight: '25px' }}>
                                                         {imageNumber}
                                                     </Typography>
 
 
 
-                                                    <FullscreenExitIcon sx ={{alignSelf:'center', paddingRight:'5px'}}/>
-                                                    <Typography sx ={{alignSelf:'center', paddingRight: '25px'}}>
+                                                    <FullscreenExitIcon sx={{ alignSelf: 'center', paddingRight: '5px' }} />
+                                                    <Typography sx={{ alignSelf: 'center', paddingRight: '25px' }}>
                                                         {label}
                                                     </Typography>
 
                                                     <IconButton>
-                                                        <SecurityUpdateIcon/>
+                                                        <SecurityUpdateIcon />
                                                     </IconButton>
-                                                    
+
                                                 </Box>
                                             </Box>
-                                            <Grid container spacing={2} sx={{ marginTop: 2, justifyContent: 'center' }}>
+                                            <Grid container sx={{ marginTop: 2, justifyContent:'center'}}>
                                                 {imageUrl.map((image, index) => (
                                                     <Grid item xs={3} key={index}>
                                                         <Box
                                                             sx={{
                                                                 position: 'relative',
-                                                                paddingTop: '100%',
+                                                                width: '100%',   // Đảm bảo Box có chiều rộng rõ ràng
+                                                                height: 'auto',
                                                                 borderRadius: 2,
-                                                                overflow: 'hidden',
+                                                                // overflow: 'hidden',
                                                                 backgroundColor: '#1E1E1E',
                                                             }}
                                                         >
@@ -367,12 +368,14 @@ const ImageGeneratorAdvanced = () => {
                                                                     position: 'absolute',
                                                                     top: 0,
                                                                     left: 0,
-                                                                    // width: '100%',
-                                                                    height: '100%',
+                                                                    width: '90%',
+                                                                    // height: '100%',
+                                                                    borderRadius : 10,
+                                                                    border:'1px solid #C209C1',
                                                                     objectFit: 'cover'
                                                                 }}
                                                             />
-                                                            <IconButton
+                                                            {/* <IconButton
                                                                 sx={{
                                                                     position: 'absolute',
                                                                     top: 8,
@@ -385,7 +388,7 @@ const ImageGeneratorAdvanced = () => {
                                                                 }}
                                                             >
                                                                 <VisibilityIcon />
-                                                            </IconButton>
+                                                            </IconButton> */}
                                                         </Box>
                                                     </Grid>
                                                 ))}
