@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, TextField, Typography, Box, CircularProgress } from '@mui/material';
 import ImageSlider from "react-image-comparison-slider";
 import { styled, keyframes } from '@mui/system';
+import './Upscaling.css'
 
 const pulse = keyframes`
   0%, 100% {
@@ -25,9 +26,9 @@ const Square = styled(Box)(({ theme }) => ({
 
 
 const ImageResult = ({ uploadedImageUrl, imageUrl, imageDimensions }) => {
-    // console.log("imadfmafm",uploadedImageUrl)
-    // console.log('adfasfs', imageUrl)
-    // console.log("imadfmafm",imageDimensions)
+    console.log("imadfmafm",uploadedImageUrl)
+    console.log('adfasfs', imageUrl)
+    console.log("imadfmafm",imageDimensions)
     return (
         <div>
             {uploadedImageUrl && imageUrl && imageDimensions ? (

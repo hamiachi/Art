@@ -9,10 +9,12 @@ import CCSR from './CCSR';
 import * as fal from "@fal-ai/serverless-client";
 import Clarity from './Clarity';
 import UpIcon from './office.png'
+import { mode } from 'crypto-js';
 
 fal.config({
     credentials: "65b7fc8c-1ba4-4c55-b9bb-a35cfffcd110:b75ad2c0c163e9bee02f5780d1df1f8e"
 });
+
 const StyledBox = styled(Box)({
     display: 'flex',
     alignItems: 'center',
@@ -24,10 +26,9 @@ const LoadingBox = styled(Box)({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection:'column',
+    flexDirection: 'column',
     height: '550px',
     width: '100%',
-    // backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: '10px',
     border: '1px solid black'
 })
@@ -65,10 +66,7 @@ function Upscaling() {
         setExpanded(!expanded);
     };
 
-    // console.log(selectedModel)
-
     const handleModelClose = (model) => {
-        // console.log("handel",uploadImage)
         setModel(null);
         if (model) {
             setSelectedModel(model);
@@ -96,29 +94,33 @@ function Upscaling() {
     };
     console.log('Up', uploadImage)
 
-    // const customGenerate = async () => {
-    //     console.log('adfafasfafafasfs', uploadImage)
-    //     try {
-    //         const result = await fal.subscribe(`fal-ai/${model}`, {
-    //             input: {
-    //                 image_url: uploadImage,
-    //             },
-    //             logs: true,
-    //             onQueueUpdate: (update) => {
-    //                 if (update.status === "IN_PROGRESS") {
-    //                     update.logs.map((log) => log.message).forEach(console.log);
-    //                 }
-    //             },
-    //         });
-    //         // console.log(result)
-    //         setNewImage(result.image.url); // Adjust according to the actual result structure
-    //         // console.log(result.image.url); // Adjust according to the actual result structure
-    //     } catch (error) {
-    //         // setError('Error generating image');
-    //         console.error('Error generating image:', error);
-    //     }
-    //     // setLoading(false);
-    // };
+    const customGenerate = async () => {
+        console.log('adfafasfafafasfs', uploadImage)
+        console.log("model", selectedModel)
+        try {
+            const result = await fal.subscribe(`fal-ai/${selectedModel}`, {
+                input: {
+                    image_url: uploadImage,
+                },
+                logs: true,
+                onQueueUpdate: (update) => {
+                    if (update.status === "IN_PROGRESS") {
+                        update.logs.map((log) => log.message).forEach(console.log);
+                    }
+                },
+                
+            });
+            // console.log(result)
+            // console.log(input)
+            setNewImage(result.image.url);
+            setIsLoading(true) // Adjust according to the actual result structure
+            // console.log(result.image.url); // Adjust according to the actual result structure
+        } catch (error) {
+            // setError('Error generating image');
+            console.error('Error generating image:', error);
+        }
+        // setLoading(false);
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }} >
@@ -162,26 +164,25 @@ function Upscaling() {
                                 <TextField
                                     label="Image URL*"
                                     // variant="outlined"
+                                    value={uploadImage}
+
                                     margin="normal"
-                                    style={{ width: '70%' }}
+                                    style={{ width: '60%', marginTop: '16px' }}
                                 />
 
-                                <Box sx={{ height: '30px' }}>
-                                    <Button
-                                        variant="contained"
-                                        component="label"
-                                        sx={{ mt: 2 }}
-                                    >
-                                        Choose...
-                                        <input
-                                            type="file"
-                                            hidden
-                                            onChange={handleFileChange}
-                                            accept="image/*"
-                                        />
-                                    </Button>
-
-                                </Box>
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                    sx={{ height: '56px', width: '30%', marginTop: '16px' }}
+                                >
+                                    Choose...
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={handleFileChange}
+                                        accept="image/*"
+                                    />
+                                </Button>
                             </Grid>
 
                             <StyledBox>
@@ -215,14 +216,34 @@ function Upscaling() {
                             <Typography variant="body2" color="textSecondary" gutterBottom>
                                 Customize your input with more control.
                             </Typography>
-                            <Box display="flex" justifyContent="flex-end" mt={2}>
+                            {/* <Box display="flex" justifyContent="flex-end" mt={2}>
                                 <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }}>
                                     Reset
                                 </Button>
                                 <Button variant="contained" color="primary" onClick={handleGenerateImage}>
                                     Run
                                 </Button>
+                            </Box> */}
+
+                            {expanded ? (
+                                <Box display="flex" justifyContent="flex-end" mt={2}>
+                                    <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }}>
+                                        Reset
+                                    </Button>
+                                    <Button variant="contained" color="primary" onClick={handleGenerateImage}>
+                                        Run
+                                    </Button>
+                                </Box>
+                            ) : (
+                            <Box display="flex" justifyContent="flex-end" mt={2}>
+                                <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }}>
+                                    Reset
+                                </Button>
+                                <Button variant="contained" color="primary" onClick={customGenerate}>
+                                    Run
+                                </Button>
                             </Box>
+                            )}
 
 
                         </CardContent>
@@ -240,7 +261,7 @@ function Upscaling() {
 
                             ) : (
                                 <LoadingBox>
-                                    <img src={UpIcon} style={{width: '50%' }}></img>
+                                    <img src={UpIcon.src} style={{ width: '50%' }}></img>
                                     <Typography variant='h5'>Waiting for your input</Typography>
 
                                 </LoadingBox>
