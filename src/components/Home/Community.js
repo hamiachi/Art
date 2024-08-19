@@ -1,7 +1,11 @@
+"use client"
+
 import React from 'react'
 import './Community.css'
+import { useRouter } from 'next/navigation';
 
 const Community = () => {
+    const router = useRouter();
     const promt = {
         "1" : "An autumn forest with golden and red leaves, sunlight filtering through the trees, and a small stream flowing through.",
         "2" : "A modern city in the future with skyscrapers, flying cars, and bright neon lights.",
@@ -35,6 +39,12 @@ const Community = () => {
         { width: '675px', height: '350px', ...commonStyles },
         { width: '675px', height: '350px', ...commonStyles }
     ];
+
+    const handleClick = (text) => {
+        router.push(`/generator?text=${encodeURIComponent(text)}`);
+    };
+
+
   return (
     <div className='Community'>
         <h1>Join <span>millions</span> of creators who grow their brand with Picsart</h1>
@@ -45,7 +55,7 @@ const Community = () => {
                     <img src='/commu/1.jpeg' alt='com' width={'400px'} height={'400px'}/>
                     <div className='demo' style={{marginTop: '-20px'}}>
                         <p>{promt["1"]}</p>
-                        <button>Use this promt &rarr;</button>
+                        <button onClick={() => handleClick(promt["1"])}>Use this promt &rarr;</button>
                     </div>
                 </div>
                 <div>
@@ -54,7 +64,7 @@ const Community = () => {
                         <img src='/commu/24.jpeg' alt='com' width={'620px'} height={'320px'}/>
                         <div className='demo'>
                             <p>{promt["24"]}</p>
-                            <button>Use this promt &rarr;</button>
+                            <button onClick={() => handleClick(promt["24"])}>Use this promt &rarr;</button>
                         </div>
                     </div>
 
@@ -64,7 +74,7 @@ const Community = () => {
                             <img src='/commu/21.jpeg' alt='com' width={'250px'} height={'250px'}/>
                             <div className='demo' style={{marginTop: '-80px'}}>
                                 <p>{promt["21"]}</p>
-                                <button>Use this promt &rarr;</button>
+                                <button onClick={() => handleClick(promt["21"])}>Use this promt &rarr;</button>
                             </div>
                         </div>
                         {/* Pic 3 */}
@@ -72,7 +82,7 @@ const Community = () => {
                             <img src='/commu/18.jpeg' alt='com' width={'350px'} height={'250px'}/>
                             <div className='demo' style={{marginTop: '-20px'}}>
                                 <p>{promt["18"]}</p>
-                                <button>Use this promt &rarr;</button>
+                                <button onClick={() => handleClick(promt["18"])}>Use this promt &rarr;</button>
                             </div>
                         </div>
 
@@ -83,7 +93,7 @@ const Community = () => {
                     <img src='/commu/4.jpeg' alt='com' width={'300px'} height={'596px'}/>
                     <div className='demo' style={{marginTop: '-40px'}}>
                         <p>{promt["4"]}</p>
-                        <button>Use this promt &rarr;</button>
+                        <button onClick={() => handleClick(promt["4"])}>Use this promt &rarr;</button>
                     </div>
                 </div>
             </div>
@@ -93,7 +103,7 @@ const Community = () => {
                     <img src='/commu/2.jpeg' alt='com' width={'400px'} height={'600px'}/>
                     <div className='demo'>
                         <p>{promt["2"]}</p>
-                        <button>Use this promt &rarr;</button>
+                        <button onClick={() => handleClick(promt["2"])}>Use this promt &rarr;</button>
                     </div>
                 </div>
                 {/* Pic 6 */}
@@ -101,7 +111,7 @@ const Community = () => {
                     <img src='/commu/22.jpeg' alt='com' width={'460px'} height={'400px'}/>
                     <div className='demo'>
                         <p>{promt["22"]}</p>
-                        <button>Use this promt &rarr;</button>
+                        <button onClick={() => handleClick(promt["22"])}>Use this promt &rarr;</button>
                     </div>
                 </div>
                 {/* Pic 7 */}
@@ -109,7 +119,7 @@ const Community = () => {
                     <img src='/commu/15.jpeg' alt='com' width={'460px'} height={'400px'}/>
                     <div className='demo' style={{marginTop: '-20px'}}>
                         <p>{promt["15"]}</p>
-                        <button>Use this promt &rarr;</button>
+                        <button onClick={() => handleClick(promt["15"])}>Use this promt &rarr;</button>
                     </div>
                 </div>
             </div>
@@ -119,7 +129,7 @@ const Community = () => {
                     <img src='/commu/3.jpeg' alt='com' width={'675px'} height={'350px'}/>
                     <div className='demo'>
                         <p>{promt["3"]}</p>
-                        <button>Use this promt &rarr;</button>
+                        <button onClick={() => handleClick(promt["3"])}>Use this promt &rarr;</button>
                     </div>
                 </div>
                 {/* Pic 9 */}
@@ -127,7 +137,7 @@ const Community = () => {
                     <img src='/commu/28.jpeg' alt='com' width={'675px'} height={'350px'}/>
                     <div className='demo'>
                         <p>{promt["28"]}</p>
-                        <button>Use this promt &rarr;</button>
+                        <button onClick={() => handleClick(promt["28"])}>Use this promt &rarr;</button>
                     </div>
                 </div>
             </div>

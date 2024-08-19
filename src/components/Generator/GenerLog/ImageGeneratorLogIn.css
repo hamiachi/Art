@@ -17,11 +17,10 @@ body {
     font-family: Arial, sans-serif;
     background-color: white;
     display: flex;
-    height: 97.5vh;
+    min-height: 97.5vh;
     margin: 0;
     color: black;
     width: 100%;
-    overflow: hidden;
 }
 
 .gap_18 {
@@ -45,7 +44,7 @@ body {
 .prompt{
     margin-left: 25px;
     width: 350px;
-    height: 80vh;
+    min-height: 80vh;
     border-radius: 10px;
     border: 1px solid gainsboro;
     margin-right: 25px;
@@ -77,8 +76,6 @@ body {
     border-radius: 5px;
     padding: 10px;
 }
-
-textarea
 
 .input_prompt textarea::placeholder  {
     padding: 5px 10px;
@@ -203,15 +200,11 @@ textarea
     cursor: pointer;
 }
 
-img {
-    height: 300px;
-    width: 300px;
-}
-
 .image_generate {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     margin-top: 90px;
     width: 70vw;
     border-radius: 10px;
@@ -221,6 +214,8 @@ img {
 
 .shape {
     border: 2px solid transparent;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .s11 {

@@ -1,13 +1,14 @@
 "use client"
 
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './ImageGenerator.css'
 import axios from 'axios'
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import CryptoJS from 'crypto-js';
 const ImageGenerator = () => {
 
   const router = useRouter();
+  const searchParams = useSearchParams();
   // const secretKey = process.env.GETIMG_KEY;
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY || 'a_very_secret_key_1234567890'; // đảm bảo rằng secretKey đúng
   
@@ -22,7 +23,18 @@ const ImageGenerator = () => {
   let inputRef = useRef(null);
   const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+    // Lấy giá trị của text từ query parameter
+    const text = searchParams.get('text');
+    
+    // Nếu có giá trị text, gán nó vào input
+    if (text && inputRef.current) {
+        inputRef.current.value = decodeURIComponent(text);
+    }
+  }, [searchParams]);
+
   const handleImageUrl = async (url) => {
+    console.log("Bước 3: Đang cập nhật URL vào MongoDB...");
     const token = sessionStorage.getItem('token');
   
     if (!token) {
@@ -44,11 +56,12 @@ const ImageGenerator = () => {
   
       // Lấy giá trị input
       const inputText = inputRef.current.value;
+      const urlList = [inputText, url];
   
       // Gửi yêu cầu đến máy chủ MongoDB để cập nhật thông tin người dùng
       const response = await axios.post('/api/updateUser', {
         email: decryptedEmail,
-        pic: { [inputText]: url }, // Gửi dưới dạng {input: url}
+        pic: urlList, // Gửi dưới dạng {input: url}
       });
   
       if (response.status === 200) {
@@ -61,14 +74,14 @@ const ImageGenerator = () => {
     }
   };
 
-  
   const imageGenerator = async() => {
     if (inputRef.current.value === ""){
       return 0;
     }
 
-    setLoading(true)
-    setImage(STATUS.LOADING)
+    setLoading(true);
+    setImage(STATUS.LOADING);
+    console.log("Bước 1: Đang tạo ảnh...");
     const options = {
       method: 'POST',
       url: 'https://api.getimg.ai/v1/stable-diffusion/text-to-image',
@@ -94,19 +107,39 @@ const ImageGenerator = () => {
       }
     };
 
-    axios
-    .request(options)
-    .then(function (response) {
-      let image_create =response.data.url
+    try {
+      const response = await axios.request(options);
+      const image_create = response.data.url;
       setImage(STATUS.LOADED)
       setImageUrl(image_create)
-      handleImageUrl(image_create)
-      setLoading(false)
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+      console.log("Bước 1: Ảnh đã được tạo thành công:", image_create);
+      console.log(imageUrl)
 
+      // Tải ảnh về server tạm thời
+      const proxyUrl = '/api/proxy'; // Địa chỉ endpoint proxy server của bạn
+      const downloadResponse = await axios.post(proxyUrl, { imageUrl: image_create }, { responseType: 'arraybuffer' });
+      const imageBuffer = Buffer.from(downloadResponse.data, 'binary');
+
+      console.log(downloadResponse)
+      console.log(imageBuffer)
+
+      // Gửi ảnh đã tải lên Google Cloud Storage
+      const uploadResponse = await axios.post('/api/upload', imageBuffer, {
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'File-Name': 'hamiachi/generated-image1.jpeg' // Tên của tệp trên Google Cloud Storage
+        }
+      });
+
+      const newImageUrl = uploadResponse.data.url;
+      console.log("Bước 2: Ảnh đã được tải lên Google Cloud Storage:", newImageUrl); // **URL ảnh được đưa lên GG Storage**
+      handleImageUrl(newImageUrl);
+
+    } catch (error) {
+      console.error('Error generating image:', error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const advance = () => {

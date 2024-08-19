@@ -38,7 +38,7 @@ const ImageGeneratorAdvanced = () => {
           window.location.hash = 'reloaded';
           window.location.reload();
         }
-      }, []);
+    }, []);
 
     const handleModelChange = (event) => {
         if (event.target.value === 'more-option') {

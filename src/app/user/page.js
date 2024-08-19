@@ -1,8 +1,11 @@
 import React from 'react'
+import Gallery from '@/components/Gallery/Gallery'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <Gallery/>
+    </div>
   )
 }
 

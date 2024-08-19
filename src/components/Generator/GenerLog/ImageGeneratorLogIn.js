@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import './ImageGeneratorLogIn.css'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
+import CryptoJS from 'crypto-js';
 import Navbar from '@/components/Home/Navbar';
 
 const ImageGeneratorLogIn = () => {
@@ -15,7 +16,7 @@ const ImageGeneratorLogIn = () => {
   const [imageNumberLimit, setImageNumberLimit] = useState(10);
   const [shape, setShape] = useState('s11');
   const router = useRouter();
-  const secretKey = process.env.GETIMG_KEY;
+  const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY || 'a_very_secret_key_1234567890'; // đảm bảo rằng secretKey đúng
 
   useEffect(() => {
     // Kiểm tra nếu trang chưa được reload, thì reload nó
@@ -46,6 +47,47 @@ const ImageGeneratorLogIn = () => {
     setImageNumberLimit(num)
   }
 
+  const handleImageUrl = async (url) => {
+    console.log("Bước 3: Đang cập nhật URL vào MongoDB...");
+    const token = sessionStorage.getItem('token');
+  
+    if (!token) {
+      console.log("No token found, skipping handleImageUrl");
+      return;
+    }
+  
+    try {
+      // Giải mã token để lấy email
+      console.log("Original Token:", token);
+      const bytes = CryptoJS.AES.decrypt(token, secretKey);
+      const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
+      console.log("Decrypted Email:", decryptedEmail);
+  
+      if (!decryptedEmail) {
+        console.log("Failed to decrypt email or email is empty");
+        return;
+      }
+  
+      // Lấy giá trị input
+      const inputText = inputRef.current.value;
+      const urlList = [inputText, ...url];
+  
+      // Gửi yêu cầu đến máy chủ MongoDB để cập nhật thông tin người dùng
+      const response = await axios.post('/api/updateUser', {
+        email: decryptedEmail,
+        pic: urlList, // Gửi dưới dạng {input: url}
+      });
+  
+      if (response.status === 200) {
+        console.log("User's pics array updated successfully with input and URL");
+      } else {
+        console.log("Failed to update user's pics array");
+      }
+    } catch (error) {
+      console.error("Error in handleImageUrl:", error);
+    }
+  };
+
   let inputRef = useRef(null);
   const imageGenerator = async () => {
     if (inputRef.current.value === "") {
@@ -61,7 +103,7 @@ const ImageGeneratorLogIn = () => {
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          authorization: secretKey
+          authorization: 'Bearer key-1ZFqQO2I33JoOA7qLfsYrLpWXnp0WI36jMOLb4UUOC2RGqwq0G7veBhIfYkuVFCNhlXetqRLa7KPr8SghpBuIx3SnbHPREWu'
         },
         data: { style: style, prompt: `${inputRef.current.value}`, aspect_ratio: ratio, response_format: 'url' }
       };
@@ -73,12 +115,46 @@ const ImageGeneratorLogIn = () => {
       const responses = await Promise.all(requests);
       const urls = responses.map(response => response.data.url);
       setImageUrl(urls)
+
+      const newUrls = [];
+
+      // Lặp qua từng URL trong danh sách image_create_list
+      for (const [index, image_create] of urls.entries()) {
+        console.log(`Bước 1: Ảnh đã được tạo thành công [${index + 1}]:`, image_create);
+
+        try {
+          // Tải ảnh về server tạm thời
+          const proxyUrl = '/api/proxy'; // Địa chỉ endpoint proxy server của bạn
+          const downloadResponse = await axios.post(proxyUrl, { imageUrl: image_create }, { responseType: 'arraybuffer' });
+          const imageBuffer = Buffer.from(downloadResponse.data, 'binary');
+
+          console.log(downloadResponse);
+          console.log(imageBuffer);
+
+          // Gửi ảnh đã tải lên Google Cloud Storage
+          const uploadResponse = await axios.post('/api/upload', imageBuffer, {
+            headers: {
+              'Content-Type': 'application/octet-stream',
+              'File-Name': `hamiachi/generated-image-${index + 1}.jpeg` // Đặt tên tệp theo index
+            }
+          });
+
+          const newImageUrl = uploadResponse.data.url;
+          console.log(`Bước 2: Ảnh đã được tải lên Google Cloud Storage [${index + 1}]:`, newImageUrl);
+
+          // Gọi hàm handleImageUrl cho từng URL mới
+          newUrls.push(newImageUrl);
+        } catch (error) {
+          console.error(`Error processing image [${index + 1}]:`, error);
+        }
+      }
+      handleImageUrl(newUrls);
+      //===========================================
+
     } catch (error){
       console.log(error)
     }
-
     console.log(imageUrl)
-
   }
 
   const advance = () => {
@@ -156,11 +232,11 @@ const ImageGeneratorLogIn = () => {
         </div>
 
         <div className="image_generate">
-          <div className={`shape ${shape}`}>
             {imageUrl.map((url, index) => (
+              <div className={`shape ${shape}`}>
                 <img className={`${shape}`} key = {index} src= {url} alt="" />
+              </div>
             ))}
-          </div>
         </div>
       </div>
     </div>
