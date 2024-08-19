@@ -5,8 +5,8 @@ import * as fal from "@fal-ai/serverless-client";
 fal.config({
     credentials: "65b7fc8c-1ba4-4c55-b9bb-a35cfffcd110:b75ad2c0c163e9bee02f5780d1df1f8e"
 });
-const Aura = ({ uploadImage, setGenerateImage, setNewImage }) => {
-    const [upscaleFactor, setUpscaleFactor] = useState('')
+const Aura = ({ uploadImage, setIsLoading, setNewImage }) => {
+    const [upscaleFactor, setUpscaleFactor] = useState(4)
     const [tile, setTile] = useState(false)
     const [version, setVersion] = useState('v1')
     // const [newImage, setNewImage] = useState(null)
@@ -23,7 +23,15 @@ const Aura = ({ uploadImage, setGenerateImage, setNewImage }) => {
         setVersion(event.target.value)
     }
 
+    const handleReset = () => {
+        setUpscaleFactor(4);
+        setTile(false);
+        setVersion('v1')
+
+    }
     const generateImage = async () => {
+        setIsLoading(true)
+        setNewImage(null)
         try {
             const result = await fal.subscribe("fal-ai/aura-sr", {
                 input: {
@@ -44,16 +52,12 @@ const Aura = ({ uploadImage, setGenerateImage, setNewImage }) => {
             // console.log(result.image.url); // Adjust according to the actual result structure
         } catch (error) {
             // setError('Error generating image');
+            setIsLoading(false)
             console.error('Error generating image:', error);
         }
         // setLoading(false);
     };
 
-    React.useEffect(() => {
-        setGenerateImage(() => generateImage);
-    }, [setGenerateImage]);
-
-    // console.log(newImage)
     return (
         <div>
             {/* <Divider style={{ margin: '16px 0' }} /> */}
@@ -96,6 +100,15 @@ const Aura = ({ uploadImage, setGenerateImage, setNewImage }) => {
                         <MenuItem value="v1">v1</MenuItem>
                         <MenuItem value="v2">v2</MenuItem>
                     </Select>
+                </Box>
+
+                <Box display="flex" justifyContent="flex-end" mt={2}>
+                    <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }} onClick={handleReset}>
+                        Reset
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={generateImage}>
+                        Run
+                    </Button>
                 </Box>
             </Box>
         </div>

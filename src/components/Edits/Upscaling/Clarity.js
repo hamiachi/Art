@@ -13,7 +13,7 @@ const StyledBox = styled(Box)({
     marginBottom: '16px',
 });
 
-const Clarity = ({ uploadImage, setGenerateImage, setNewImage }) => {
+const Clarity = ({ uploadImage, setIsLoading, setNewImage }) => {
     // const [prompt, setPrompt] = useState('masterpiece, best quality, highres');      
     let inputPromt = useRef('masterpiece, best quality, highres');
     const [upscaleFactor, setUpscaleFactor] = useState(2);
@@ -23,6 +23,9 @@ const Clarity = ({ uploadImage, setGenerateImage, setNewImage }) => {
     const [resemblance, setResemblance] = useState(0.6);
     const [guidanceScale, setGuidanceScale] = useState(4);
     const [numInferenceSteps, setNumInferenceSteps] = useState(18);
+
+    console.log("Ảnh tải lên", uploadImage)
+
 
     const handleReset = () => {
         // setPrompt('masterpiece, best quality, highres');
@@ -35,6 +38,8 @@ const Clarity = ({ uploadImage, setGenerateImage, setNewImage }) => {
     };
 
     const generateImage = async () => {
+        setNewImage(null)
+        setIsLoading(true)
         try {
             const result = await fal.subscribe("fal-ai/clarity-upscaler", {
                 input: {
@@ -54,25 +59,18 @@ const Clarity = ({ uploadImage, setGenerateImage, setNewImage }) => {
                     }
                 },
             });
-            console.log(result)
+            console.log("Clarity", result)
             setNewImage(result.image.url); // Adjust according to the actual result structure
+           
             // console.log(result.image.url); // Adjust according to the actual result structure
         } catch (error) {
             // setError('Error generating image');
+            setIsLoading(false)
             console.error('Error generating image:', error);
         }
         // setLoading(false);
     };
 
-    React.useEffect(() => {
-        setGenerateImage(() => generateImage);
-    }, [setGenerateImage]);
-    const handleRun = () => {
-        console.log('Running with settings:', {
-            prompt, upscaleFactor, inputNegativePrompt, creativity,
-            resemblance, guidanceScale, numInferenceSteps
-        });
-    };
     return (
         <div>
             <StyledBox>
@@ -235,15 +233,16 @@ const Clarity = ({ uploadImage, setGenerateImage, setNewImage }) => {
                         />
                     </Box>
                 </Box>
+
+                <Box display="flex" justifyContent="flex-end" mt={2}>
+                    <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }} onClick={handleReset}>
+                        Reset
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={generateImage}>
+                        Run
+                    </Button>
+                </Box>
             </StyledBox>
-            {/* <Box display="flex" justifyContent="flex-end" mt={2}>
-        <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }} onClick={handleReset}>
-          Reset
-        </Button>
-        <Button variant="contained" color="primary" onClick={handleRun}>
-          Run
-        </Button>
-      </Box> */}
         </div>
     )
 }

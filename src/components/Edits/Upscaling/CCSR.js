@@ -15,14 +15,23 @@ const StyledBox = styled(Box)({
     justifyContent: 'space-between',
     marginBottom: '16px',
 });
-const CCSR = ({ uploadImage, setGenerateImage, setNewImage }) => {
+const CCSR = ({ uploadImage, setIsLoading, setNewImage }) => {
 
     const [scale, setScale] = useState(2);
     const [tileDiffusion, setTileDiffusion] = useState('none');
     const [tileDiffusionSize, setTileDiffusionSize] = useState(1024);
     const [tileDiffusionStride, setTileDiffusionStride] = useState(512);
 
+    const handleReset = () =>{
+        setScale(2);
+        setTileDiffusion('none')
+        setTileDiffusionSize(1024)
+        setTileDiffusionStride(512)
+    }
+
     const generateImage = async () => {
+        setNewImage(null)
+        setIsLoading(true)
         try {
             const result = await fal.subscribe("fal-ai/ccsr", {
                 input: {
@@ -44,14 +53,11 @@ const CCSR = ({ uploadImage, setGenerateImage, setNewImage }) => {
             // console.log(result.image.url); // Adjust according to the actual result structure
         } catch (error) {
             // setError('Error generating image');
+            setIsLoading(false)
             console.error('Error generating image:', error);
         }
         // setLoading(false);
     };
-
-    React.useEffect(() => {
-        setGenerateImage(() => generateImage);
-    }, [setGenerateImage]);
 
     return (
         <div>
@@ -85,8 +91,8 @@ const CCSR = ({ uploadImage, setGenerateImage, setNewImage }) => {
                         style={{ width: '30%' }}
                     >
                         <MenuItem value="none">none</MenuItem>
-                        <MenuItem value="option1">mix</MenuItem>
-                        <MenuItem value="option2">gaussian</MenuItem>
+                        <MenuItem value="mix">mix</MenuItem>
+                        <MenuItem value="gaussian">gaussian</MenuItem>
                     </Select>
                 </Box>
 
@@ -132,6 +138,15 @@ const CCSR = ({ uploadImage, setGenerateImage, setNewImage }) => {
                             style={{ width: '60px' }}
                         />
                     </Box>
+                </Box>
+
+                <Box display="flex" justifyContent="flex-end" mt={2}>
+                    <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }} onClick={handleReset}>
+                        Reset
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={generateImage}>
+                        Run
+                    </Button>
                 </Box>
             </Box>
 

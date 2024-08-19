@@ -94,6 +94,7 @@ function Upscaling() {
     };
     console.log('Up', uploadImage)
 
+
     const customGenerate = async () => {
         console.log('adfafasfafafasfs', uploadImage)
         console.log("model", selectedModel)
@@ -110,13 +111,11 @@ function Upscaling() {
                 },
                 
             });
-            // console.log(result)
-            // console.log(input)
             setNewImage(result.image.url);
-            setIsLoading(true) // Adjust according to the actual result structure
-            // console.log(result.image.url); // Adjust according to the actual result structure
+            setIsLoading(true)
         } catch (error) {
             // setError('Error generating image');
+            setIsLoading(false)
             console.error('Error generating image:', error);
         }
         // setLoading(false);
@@ -204,36 +203,22 @@ function Upscaling() {
                             </StyledBox>
 
                             {expanded && selectedModel === 'aura-sr' &&
-                                (<Aura uploadImage={uploadImage} setGenerateImage={setGenerateImage} setNewImage={setNewImage} />)}
+                                (<Aura uploadImage={uploadImage} setIsLoading = {setIsLoading} setNewImage={setNewImage} />)}
 
                             {expanded && selectedModel === 'clarity-upscaler' &&
-                                (<Clarity uploadImage={uploadImage} setGenerateImage={setGenerateImage} setNewImage={setNewImage} />)}
+                                (<Clarity uploadImage={uploadImage} setIsLoading = {setIsLoading} setNewImage={setNewImage} />)}
 
                             {expanded && selectedModel === 'ccsr' &&
-                                (<CCSR uploadImage={uploadImage} setGenerateImage={setGenerateImage} setNewImage={setNewImage} />)}
+                                (<CCSR uploadImage={uploadImage} setIsLoading = {setIsLoading} setNewImage={setNewImage} />)}
 
 
                             <Typography variant="body2" color="textSecondary" gutterBottom>
                                 Customize your input with more control.
                             </Typography>
-                            {/* <Box display="flex" justifyContent="flex-end" mt={2}>
-                                <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }}>
-                                    Reset
-                                </Button>
-                                <Button variant="contained" color="primary" onClick={handleGenerateImage}>
-                                    Run
-                                </Button>
-                            </Box> */}
 
                             {expanded ? (
-                                <Box display="flex" justifyContent="flex-end" mt={2}>
-                                    <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }}>
-                                        Reset
-                                    </Button>
-                                    <Button variant="contained" color="primary" onClick={handleGenerateImage}>
-                                        Run
-                                    </Button>
-                                </Box>
+                                <>
+                                </>
                             ) : (
                             <Box display="flex" justifyContent="flex-end" mt={2}>
                                 <Button variant="outlined" color="secondary" style={{ marginRight: '8px' }}>

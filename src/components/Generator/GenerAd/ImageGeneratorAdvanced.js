@@ -186,6 +186,9 @@ const ImageGeneratorAdvanced = () => {
     }
 
     console.log(imageUrl)
+    if (selectedModel){
+        console.log("adfasfasfasf",selectedModel.title)
+    }
     // console.log( originalModel[model].title, "hahahahahhhaahah")
     return (
         <div className="main">
