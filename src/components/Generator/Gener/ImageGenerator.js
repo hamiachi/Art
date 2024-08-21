@@ -89,7 +89,7 @@ const ImageGenerator = () => {
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        authorization: 'Bearer key-3k1nmjvo0f5bI7rRicJ1qYcewPA7xGRQ1tR4iawVGfLlfXj511rIMMpFtb8q7wLQMRPYIAulnzqcqwhPwalLh5uTTSf18S8e'
+        authorization: 'Bearer key-3vesbQUy5wpwK8lMZtb9QkM0d24JMU8ABlFxWFhAt4Ie4N5hepl3O7M260SmdlwXLRqQFYUOacEyUOhGyo9vf38gb6rhxo0M'
       },
 
       data: {
@@ -143,7 +143,15 @@ const ImageGenerator = () => {
   }
 
   const advance = () => {
-    router.push('/generator/login');
+    const tokenCurrent = sessionStorage.getItem('token');
+    if (tokenCurrent === null || tokenCurrent === '') {
+      const noAccount = window.confirm('You will need to log in to use this function');
+        if (noAccount) {
+          router.push('/login');
+        }
+      } else {
+        router.push('/generator/login');
+    }
   }
 
   return (

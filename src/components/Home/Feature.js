@@ -1,7 +1,27 @@
 import React from 'react'
 import './Feature.css'
+import { useRouter } from 'next/navigation';
 
 const Feature = () => {
+    const router = useRouter();
+
+    const goToGener = () => {
+        router.push('/generator');
+    }
+
+    const goToEdits = () => {
+        const tokenCurrent = sessionStorage.getItem('token');
+        if (tokenCurrent === null || tokenCurrent === '') {
+          const noAccount = window.confirm('You will need to log in to use this function');
+    
+          if (noAccount) {
+            router.push('/login');
+          }
+        } else {
+          router.push('/edits');
+        }
+    }
+
   return (
     <div className='Feature'>
         <div className='Feature_AI'>
@@ -15,7 +35,7 @@ const Feature = () => {
                     backgrounds,</span> and <span>generate new backgrounds - </span>all 
                     before your first cup of coffee.
                     </p>
-                    <button>Explore AI tools</button>
+                    <button onClick={goToEdits}>Explore AI tools</button>
                 </div>
                 <img src='/pics/photo.jpg' alt='' width={'790px'} height={'490px'}/>
             </div>
@@ -33,7 +53,7 @@ const Feature = () => {
                     templates</span> you won’t find anywhere else. Never run out 
                     of inspiration again.
                     </p>
-                    <button>Generate AI images</button>
+                    <button onClick={goToGener}>Generate AI images</button>
                 </div>
             </div>
         </div>

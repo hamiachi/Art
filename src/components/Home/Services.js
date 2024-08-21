@@ -2,9 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import './Services.css'
+import { useRouter } from 'next/navigation';
 
 const Services = () => {
   const [number, setNumber] = useState(1);
+  const router = useRouter();
+
+  const goToGener = () => {
+    router.push('/generator');
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -112,7 +118,7 @@ const Services = () => {
               }
             </div>
         </div>
-        <button>Get started for free</button>
+        <button onClick={goToGener}>Get started for free</button>
     </div>
   )
 }

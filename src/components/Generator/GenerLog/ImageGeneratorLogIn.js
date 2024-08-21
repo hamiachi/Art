@@ -16,6 +16,7 @@ const ImageGeneratorLogIn = () => {
   const [imageNumberLimit, setImageNumberLimit] = useState(10);
   const [shape, setShape] = useState('s11');
   const router = useRouter();
+  const [buttonClicked, setButtonClicked] = useState(false);
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY || 'a_very_secret_key_1234567890'; // đảm bảo rằng secretKey đúng
 
   useEffect(() => {
@@ -90,6 +91,7 @@ const ImageGeneratorLogIn = () => {
 
   let inputRef = useRef(null);
   const imageGenerator = async () => {
+    setButtonClicked(true);
     if (inputRef.current.value === "") {
       return 0;
     }
@@ -103,7 +105,7 @@ const ImageGeneratorLogIn = () => {
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          authorization: 'Bearer key-1ZFqQO2I33JoOA7qLfsYrLpWXnp0WI36jMOLb4UUOC2RGqwq0G7veBhIfYkuVFCNhlXetqRLa7KPr8SghpBuIx3SnbHPREWu'
+          authorization: 'Bearer key-3vesbQUy5wpwK8lMZtb9QkM0d24JMU8ABlFxWFhAt4Ie4N5hepl3O7M260SmdlwXLRqQFYUOacEyUOhGyo9vf38gb6rhxo0M'
         },
         data: { style: style, prompt: `${inputRef.current.value}`, aspect_ratio: ratio, response_format: 'url' }
       };
@@ -206,16 +208,9 @@ const ImageGeneratorLogIn = () => {
 
               <div className="box" onClick={() => {handleImageNumber(1)}}>1</div>
               <div className="box" onClick={() => {handleImageNumber(2)}}>2</div>
+              <div className="box" onClick={() => {handleImageNumber(3)}}>3</div>
               <div className="box" onClick={() => {handleImageNumber(4)}}>4</div>
-              <div className="box" onClick={() => {handleImageNumberLimit(6)}}>6</div>
-              <div className="box" onClick={() => {handleImageNumberLimit(8)}}>8</div>
-              <div className="box" onClick={() => {handleImageNumberLimit(10)}}>10</div>
-
             </div>
-          </div>
-
-          <div className="upgrade">
-            <div>Upgrade <span>to create up to <span className='upgrade_span'>{imageNumberLimit}</span> images stimultaneously</span></div>
           </div>
 
           <div className="generate">
@@ -232,11 +227,22 @@ const ImageGeneratorLogIn = () => {
         </div>
 
         <div className="image_generate">
-            {imageUrl.map((url, index) => (
-              <div className={`shape ${shape}`}>
-                <img className={`${shape}`} key = {index} src= {url} alt="" />
-              </div>
-            ))}
+          {imageUrl.length === 0 ? (
+                buttonClicked ? (
+                  <div style={{display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+                    <p>Loading images...</p>
+                    <img src='/commu/gear.gif'/>
+                  </div>
+                ) : (
+                    <p>No images yet. Please create some!</p>
+                )
+            ) : (
+                imageUrl.map((url, index) => (
+                    <div className={`shape ${shape}`} key={index}>
+                        <img className={`${shape}`} src={url} alt="" />
+                    </div>
+                ))
+          )}
         </div>
       </div>
     </div>

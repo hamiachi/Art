@@ -1,8 +1,11 @@
-import React from 'react'
+import React from 'react';
+import Learn from '@/components/Learn/Learn';
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <Learn/>
+    </div>
   )
 }
 

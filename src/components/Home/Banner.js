@@ -1,7 +1,14 @@
 import React from 'react'
 import './Banner.css'
+import { useRouter } from 'next/navigation';
 
 const Banner = () => {
+  const router = useRouter();
+
+  const goToGener = () => {
+    router.push('/generator');
+}
+
   return (
     <div className='Banner'>
         <h1><span>Materialize</span> your creativity</h1>
@@ -9,7 +16,7 @@ const Banner = () => {
             The only AI-powered creative companion you’ll ever need to grow 
             your brand. Get it all done with Pixart’s ultimate creative suite.
         </p>
-        <button>Get started for free</button>
+        <button onClick={goToGener}>Get started for free</button>
 
         <div className='Banner_images'>
           <img className='Banner_images_1' src='/pics/pic2.jpeg' alt='' height={'260px'} width={'280px'}/>

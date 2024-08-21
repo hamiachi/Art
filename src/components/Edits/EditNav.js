@@ -83,7 +83,7 @@ const EditNav = () => {
         <ul className='EditNav_functions'>
             <li onClick={() => handleSelectTool('BGremover')}>Background Remover</li>
             <li onClick={() => handleSelectTool('BGchanger')}>Backgorund Changer</li>
-            <li onClick={() => handleSelectTool('Upscaling')}>Upscaling</li>
+            <li onClick={() => handleSelectTool('Upscaling')}>Sharpen image</li>
             <li onClick={() => handleSelectTool('Crop')}>Crop images</li>
             <li onClick={() => handleSelectTool('Blur')}>Blur images</li>
         </ul>
