@@ -164,6 +164,7 @@ function Upscaling() {
                                     label="Image URL*"
                                     // variant="outlined"
                                     value={uploadImage}
+
                                     margin="normal"
                                     style={{ width: '60%', marginTop: '16px' }}
                                 />
