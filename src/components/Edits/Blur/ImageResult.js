@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Box,  Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material';
 import { ImgComparisonSlider } from '@img-comparison-slider/react';
 import { styled, keyframes } from '@mui/system';
-import './Upscaling.css'
+import './Retouch.css'
+
 import { color } from 'chart.js/helpers';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ShareIcon from '@mui/icons-material/Share';
