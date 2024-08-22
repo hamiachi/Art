@@ -33,21 +33,20 @@ const civitai = new Civitai({
 
 });
 
-
-
 const ImageGeneratorAdvanced = () => {
 
     const originalModel = {
-        'urn:air:sdxl:checkpoint:civitai:133005@471120': {
+        // 
+        'bLvm8Ye': {
             title: 'JuggernautXL',
         },
-        'urn:air:sdxl:checkpoint:civitai:139562@361593': {
+        '8jqEDBN': {
             title: 'RealVisXL'
         },
-        'urn:air:sdxl:checkpoint:civitai:260267@403131': {
+        'vl5nZmX': {
             title: "Animagine XL"
         },
-        'urn:air:sd1:checkpoint:civitai:4384@128713': {
+        '4zdwGOB': {
             title: 'DreamShaper'
         }
     }
@@ -60,10 +59,13 @@ const ImageGeneratorAdvanced = () => {
     const stepValue = useSelector((state) => state.options.stepValue)
     const scaleValue = useSelector((state) => state.options.setScale)
     const sampler = useSelector((state) => state.options.setSampler)
+    const [response, setResponse] = useState(null);
 
     const router = useRouter();
 
-    const [model, setModel] = useState('urn:air:sdxl:checkpoint:civitai:133005@471120')
+    // const [model, setModel] = useState('urn:air:sdxl:checkpoint:civitai:133005@471120')
+    const [model, setModel] = useState('bLvm8Ye')
+
     const [label, setLablle] = useState('512 x 512px')
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [randomSeed, setRandomSeed] = useState(0)
@@ -75,8 +77,9 @@ const ImageGeneratorAdvanced = () => {
     const [customModel, setCustomModel] = useState(null);
     const [isUpload, setIsUpload] = useState(false)
     const [isFinal, setIsFinal] = useState(false)
+    const [selected, setSelected] = useState(true)
     const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY || 'a_very_secret_key_1234567890';
-    
+
 
     useEffect(() => {
         // Kiểm tra nếu trang chưa được reload, thì reload nó
@@ -89,6 +92,8 @@ const ImageGeneratorAdvanced = () => {
     const handleModelChange = (event) => {
         if (event.target.value === 'more-option') {
             setIsModalOpen(true);
+            setSelected(false);
+
             // setCustomModel(true)
             if (selectedModel) {
                 setModel(selectedModel.id)
@@ -96,6 +101,7 @@ const ImageGeneratorAdvanced = () => {
             }
 
         } else {
+            setSelected(true)
             setModel(event.target.value);
 
         }
@@ -143,96 +149,184 @@ const ImageGeneratorAdvanced = () => {
     const handleImageUrl = async (url) => {
         console.log("Bước 3: Đang cập nhật URL vào MongoDB...");
         const token = sessionStorage.getItem('token');
-      
+
         if (!token) {
-          console.log("No token found, skipping handleImageUrl");
-          return;
-        }
-      
-        try {
-          // Giải mã token để lấy email
-          console.log("Original Token:", token);
-          const bytes = CryptoJS.AES.decrypt(token, secretKey);
-          const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
-          console.log("Decrypted Email:", decryptedEmail);
-      
-          if (!decryptedEmail) {
-            console.log("Failed to decrypt email or email is empty");
+            console.log("No token found, skipping handleImageUrl");
             return;
-          }
-      
-          // Lấy giá trị input
-          const inputText = inputRef.current.value;
-          const urlList = [inputText, url];
-      
-          // Gửi yêu cầu đến máy chủ MongoDB để cập nhật thông tin người dùng
-          const response = await axios.post('/api/updateUser', {
-            email: decryptedEmail,
-            pic: urlList, // Gửi dưới dạng {input: url}
-          });
-      
-          if (response.status === 200) {
-            console.log("User's pics array updated successfully with input and URL");
-          } else {
-            console.log("Failed to update user's pics array");
-          }
-        } catch (error) {
-          console.error("Error in handleImageUrl:", error);
         }
-      };
+
+        try {
+            // Giải mã token để lấy email
+            console.log("Original Token:", token);
+            const bytes = CryptoJS.AES.decrypt(token, secretKey);
+            const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
+            console.log("Decrypted Email:", decryptedEmail);
+
+            if (!decryptedEmail) {
+                console.log("Failed to decrypt email or email is empty");
+                return;
+            }
+
+            // Lấy giá trị input
+            const inputText = inputRef.current.value;
+            const urlList = [inputText, url];
+
+            // Gửi yêu cầu đến máy chủ MongoDB để cập nhật thông tin người dùng
+            const response = await axios.post('/api/updateUser', {
+                email: decryptedEmail,
+                pic: urlList, // Gửi dưới dạng {input: url}
+            });
+
+            if (response.status === 200) {
+                console.log("User's pics array updated successfully with input and URL");
+            } else {
+                console.log("Failed to update user's pics array");
+            }
+        } catch (error) {
+            console.error("Error in handleImageUrl:", error);
+        }
+    };
 
 
-    const imageGenerator = async () => {
+    // const imageGenerator = async () => {
+    //     if (inputRef.current.value === "") {
+    //         return 0;
+    //     }
+    //     setIsUpload(true)
+    //     setIsFinal(false)
+    //     // setStart(true)
+
+    //     console.log('ratio')
+    //     console.log(ratio)
+    //     console.log(typeof(ratio))
+
+    //     const input = {
+    //         quantity: imageNumber,
+    //         // batchSize: 2,
+    //         model: selectedModel ? selectedModel.id : model,
+    //         params: {
+    //             prompt: `${inputRef.current.value}`,
+    //             negativePrompt: `${inputNegative.current.value}`,
+    //             scheduler: sampler,
+    //             steps: stepValue,
+    //             cfgScale: scaleValue,
+    //             width: width,
+    //             height: height,
+    //             clipSkip: 2,
+    //         },
+    //     };
+
+    //     console.log(input)
+    //     try {
+    //         const response = await civitai.image.fromText(input, true); // long polling để đợi kết quả
+    //         const token = response.token;
+    //         const result = await civitai.jobs.getByToken(token);
+    //         const urls = result.jobs.map(job => job.result.blobUrl)
+    //         console.log("Ket qua", result)
+    //         setImageUrl(urls);
+
+    //         // setStart(false)
+    //         // Lưu URL của hình ảnh nhận được
+    //         console.log(result.jobs[0].result.blobUrl);
+    //         console.log("Bước 1: Ảnh đã được tạo thành công:", urls);
+    //         console.log(imageUrl)
+
+    //         // Tải ảnh về server tạm thời
+    //         const proxyUrl = '/api/proxy'; // Địa chỉ endpoint proxy server của bạn
+    //         const downloadResponse = await axios.post(proxyUrl, { imageUrl: urls }, { responseType: 'arraybuffer' });
+    //         const imageBuffer = Buffer.from(downloadResponse.data, 'binary');
+
+    //         console.log(downloadResponse)
+    //         console.log(imageBuffer)
+
+    //         // Gửi ảnh đã tải lên Google Cloud Storage
+    //         const uploadResponse = await axios.post('/api/upload', imageBuffer, {
+    //           headers: {
+    //             'Content-Type': 'application/octet-stream',
+    //             'File-Name': 'hamiachi/generated-image1.jpeg' // Tên của tệp trên Google Cloud Storage
+    //           }
+    //         });
+
+    //         const newImageUrl = uploadResponse.data.url;
+    //         console.log("Bước 2: Ảnh đã được tải lên Google Cloud Storage:", newImageUrl); // **URL ảnh được đưa lên GG Storage**
+    //         handleImageUrl(newImageUrl);
+    //     } catch (error) {
+    //         console.error(error);
+    //     } finally {
+    //         setIsFinal(true)
+
+    //     }
+    //     console.log('ratio')
+    //     console.log(ratio)
+    // }
+    const accessToken = '620d0381c9b24b88a3e2f49f86352b95'
+    const sendInferenceRequest = async ({
+    }) => {
+        const url = 'https://sinkin.ai/api/inference';
+
+        const formData = new FormData();
+        formData.append('access_token', accessToken);
+        formData.append('model_id', model);
+        formData.append('prompt', inputRef.current.value);
+        // formData.append('lcm', lcm);
+        formData.append('width', width);
+        formData.append('height', height);
+        formData.append('negative_prompt', inputNegative.current.value);
+        // formData.append('use_default_neg', useDefaultNeg);
+        formData.append('steps', stepValue);
+        formData.append('scale', scaleValue);
+        formData.append('num_images', imageNumber);
+        formData.append('seed', -1);
+        formData.append('scheduler', 'DPMSolverMultistep');
+        try {
+            const response = await axios.post(url, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error sending inference request:', error);
+            throw error;
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         if (inputRef.current.value === "") {
             return 0;
         }
         setIsUpload(true)
         setIsFinal(false)
-        // setStart(true)
 
-        console.log('ratio')
-        console.log(ratio)
-        console.log(typeof(ratio))
-
-        const input = {
-            quantity: imageNumber,
-            // batchSize: 2,
-            model: selectedModel ? selectedModel.id : model,
-            params: {
-                prompt: `${inputRef.current.value}`,
-                negativePrompt: `${inputNegative.current.value}`,
-                scheduler: sampler,
-                steps: stepValue,
-                cfgScale: scaleValue,
-                width: width,
-                height: height,
-                clipSkip: 2,
-            },
-        };
-
-        console.log(input)
         try {
-            const response = await civitai.image.fromText(input, true); // long polling để đợi kết quả
-            const token = response.token;
-            const result = await civitai.jobs.getByToken(token);
-            const urls = result.jobs.map(job => job.result.blobUrl)
-            console.log("Ket qua", result)
-            setImageUrl(urls);
+            const result = await sendInferenceRequest({
+                // accessToken,
+                // modelId,
+                // prompt,
+                // width: 512,
+                // height: 768,
+                // steps: 30,
+                // scale: 7.5,
+            });
+            console.log(result + "dfasfas")
+            setResponse(result);
+            const urls = result.images
+            setImageUrl(result.images)
 
-            // setStart(false)
             // Lưu URL của hình ảnh nhận được
-            console.log(result.jobs[0].result.blobUrl);
+            // console.log(result.jobs[0].result.blobUrl);
             console.log("Bước 1: Ảnh đã được tạo thành công:", urls);
             console.log(imageUrl)
-      
+
             // Tải ảnh về server tạm thời
             const proxyUrl = '/api/proxy'; // Địa chỉ endpoint proxy server của bạn
             const downloadResponse = await axios.post(proxyUrl, { imageUrl: urls }, { responseType: 'arraybuffer' });
             const imageBuffer = Buffer.from(downloadResponse.data, 'binary');
-      
+
             console.log(downloadResponse)
             console.log(imageBuffer)
-      
+
             // Gửi ảnh đã tải lên Google Cloud Storage
             const uploadResponse = await axios.post('/api/upload', imageBuffer, {
               headers: {
@@ -240,25 +334,29 @@ const ImageGeneratorAdvanced = () => {
                 'File-Name': 'hamiachi/generated-image1.jpeg' // Tên của tệp trên Google Cloud Storage
               }
             });
-      
+
             const newImageUrl = uploadResponse.data.url;
             console.log("Bước 2: Ảnh đã được tải lên Google Cloud Storage:", newImageUrl); // **URL ảnh được đưa lên GG Storage**
             handleImageUrl(newImageUrl);
+            
+            
         } catch (error) {
-            console.error(error);
+            console.error('Error:', error);
         } finally {
             setIsFinal(true)
 
         }
-        console.log('ratio')
-        console.log(ratio)
-    }
+    };
+
+    // console.log("ÂDSADSD", response.images)
+
 
     const normal = () => {
         router.push('/generator/login')
     }
 
-    console.log(imageUrl)
+    console.log(imageUrl, "adfasfafasf")
+    console.log(imageUrl.length)
 
     const [dis, setDis] = useState(Array(7).fill(false));
 
@@ -287,21 +385,21 @@ const ImageGeneratorAdvanced = () => {
         <div className="main">
             <Navbar />
             <div className={showMoreOptions ? 'body blurred' : 'body'}>
-                <div className="IGA" style={{position:'relative'}}>
+                <div className="IGA" style={{ position: 'relative' }}>
                     <div className="IGA_prompt">
                         <div className="IGA_promt_selection">
                             <div onClick={normal}>Essential</div>
                             <div>Advanced</div>
                         </div>
 
-                        <div className="IGA_promt_model" style={{position:'relative'}}>
-                            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', zIndex:'100'}}>
+                        <div className="IGA_promt_model" style={{ position: 'relative' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: '100' }}>
                                 <p>Model</p>
-                                <BsFillPatchQuestionFill style={{marginRight:'15px'}} size={16} className='question' onMouseEnter={() => appear(1)} onMouseLeave={() => disappear(1)}/>
+                                <BsFillPatchQuestionFill style={{ marginRight: '15px' }} size={16} className='question' onMouseEnter={() => appear(1)} onMouseLeave={() => disappear(1)} />
                             </div>
 
-                            {dis[0] && 
-                                <div className='IGA_promt_model_div' style={{position:'absolute', left:'390px',zIndex:'1000' , marginTop:'-70px', height:'145px', width:'200px', borderRadius:'10px', boxShadow:'0 0 10px rgba(0,0,0,0.2)'}}>
+                            {dis[0] &&
+                                <div className='IGA_promt_model_div' style={{ position: 'absolute', left: '390px', zIndex: '1000', marginTop: '-70px', height: '145px', width: '200px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.2)' }}>
                                     <h1>Select a model</h1>
                                     <p>Try using different AI models, to change the core aesthetic of your image.</p>
                                 </div>
@@ -309,10 +407,10 @@ const ImageGeneratorAdvanced = () => {
 
 
                             <select className='IGA_promt_model_selection' value={model} onChange={handleModelChange}>
-                                <option value="urn:air:sdxl:checkpoint:civitai:133005@471120">JuggernautXL X Photorealism </option>
-                                <option value="urn:air:sdxl:checkpoint:civitai:139562@361593">RealVisXL Photorealism </option>
-                                <option value="urn:air:sdxl:checkpoint:civitai:260267@403131">Animagine XL Anime</option>
-                                <option value="urn:air:sd1:checkpoint:civitai:4384@128713">DreamShaper Artistic</option>
+                                <option value="bLvm8Ye">JuggernautXL X Photorealism </option>
+                                <option value="8jqEDBN">RealVisXL Photorealism </option>
+                                <option value="vl5nZmX">Animagine XL Anime</option>
+                                <option value="4zdwGOB">DreamShaper Artistic</option>
                                 {selectedModel && (
                                     <option value={selectedModel.id}>{selectedModel.title}</option>
                                 )}
@@ -323,13 +421,13 @@ const ImageGeneratorAdvanced = () => {
                         <ModelModal open={isModalOpen} handleClose={handleCloseModal} />
 
                         <div className="IGA_promt_input">
-                            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <p>Prompt</p>
-                                <BsFillPatchQuestionFill style={{marginRight:'15px'}} size={16} className='question' onMouseEnter={() => appear(2)} onMouseLeave={() => disappear(2)}/>
+                                <BsFillPatchQuestionFill style={{ marginRight: '15px' }} size={16} className='question' onMouseEnter={() => appear(2)} onMouseLeave={() => disappear(2)} />
                             </div>
 
-                            {dis[1] && 
-                                <div className='IGA_promt_model_div' style={{position:'absolute', left:'430px', boxShadow:'0 0 10px rgba(0,0,0,0.2)',zIndex:'1000' , marginTop:'-70px', height:'145px', width:'200px', borderRadius:'10px'}}>
+                            {dis[1] &&
+                                <div className='IGA_promt_model_div' style={{ position: 'absolute', left: '430px', boxShadow: '0 0 10px rgba(0,0,0,0.2)', zIndex: '1000', marginTop: '-70px', height: '145px', width: '200px', borderRadius: '10px' }}>
                                     <h1>Write a Prompt</h1>
                                     <p>Describe the image you'd like to see generated. Experiment with different words and styles for the best results.</p>
                                 </div>
@@ -339,12 +437,12 @@ const ImageGeneratorAdvanced = () => {
                         </div>
 
                         <div className="IGA_promt_negative">
-                            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <p>Negative Prompt</p>
-                                <BsFillPatchQuestionFill style={{marginRight:'15px'}} size={16} className='question' onMouseEnter={() => appear(3)} onMouseLeave={() => disappear(3)}/>
+                                <BsFillPatchQuestionFill style={{ marginRight: '15px' }} size={16} className='question' onMouseEnter={() => appear(3)} onMouseLeave={() => disappear(3)} />
                             </div>
-                            {dis[2] && 
-                                <div className='IGA_promt_model_div' style={{position:'absolute', left:'430px', boxShadow:'0 0 10px rgba(0,0,0,0.2)',zIndex:'1000' , marginTop:'-70px', height:'145px', width:'200px', borderRadius:'10px'}}>
+                            {dis[2] &&
+                                <div className='IGA_promt_model_div' style={{ position: 'absolute', left: '430px', boxShadow: '0 0 10px rgba(0,0,0,0.2)', zIndex: '1000', marginTop: '-70px', height: '145px', width: '200px', borderRadius: '10px' }}>
                                     <h1>Negative Prompt</h1>
                                     <p>Discribe details you don't want in your im your image, like color, objects or scenery</p>
                                 </div>
@@ -354,12 +452,12 @@ const ImageGeneratorAdvanced = () => {
 
                         <div className="IGA_promt_ratio">
 
-                            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <p>Aspect Ratio</p>
-                                <BsFillPatchQuestionFill style={{marginRight:'15px'}} size={16} className='question' onMouseEnter={() => appear(4)} onMouseLeave={() => disappear(4)}/>
+                                <BsFillPatchQuestionFill style={{ marginRight: '15px' }} size={16} className='question' onMouseEnter={() => appear(4)} onMouseLeave={() => disappear(4)} />
                             </div>
-                            {dis[3] && 
-                                <div className='IGA_promt_model_div' style={{position:'absolute', left:'430px', boxShadow:'0 0 10px rgba(0,0,0,0.2)',zIndex:'1000' , marginTop:'-70px', height:'145px', width:'200px', borderRadius:'10px'}}>
+                            {dis[3] &&
+                                <div className='IGA_promt_model_div' style={{ position: 'absolute', left: '430px', boxShadow: '0 0 10px rgba(0,0,0,0.2)', zIndex: '1000', marginTop: '-70px', height: '145px', width: '200px', borderRadius: '10px' }}>
                                     <h1>Change Output Resolution</h1>
                                     <p>Adjust the aspect ratio to create images in various sizes and resolutions. Set High-Res, if available, to double the output resolution.</p>
                                 </div>
@@ -376,15 +474,15 @@ const ImageGeneratorAdvanced = () => {
 
                         <div className="IGA_promt_images">
 
-                            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <p>Number of images</p>
-                                <BsFillPatchQuestionFill style={{marginRight:'15px'}} size={16} className='question' onMouseEnter={() => appear(5)} onMouseLeave={() => disappear(5)}/>
+                                <BsFillPatchQuestionFill style={{ marginRight: '15px' }} size={16} className='question' onMouseEnter={() => appear(5)} onMouseLeave={() => disappear(5)} />
                             </div>
-                            {dis[4] && 
-                                <div className='IGA_promt_model_div' style={{position:'absolute', left:'430px', boxShadow:'0 0 10px rgba(0,0,0,0.2)',zIndex:'1000' , marginTop:'-70px', height:'145px', width:'200px', borderRadius:'10px'}}>
+                            {dis[4] &&
+                                <div className='IGA_promt_model_div' style={{ position: 'absolute', left: '430px', boxShadow: '0 0 10px rgba(0,0,0,0.2)', zIndex: '1000', marginTop: '-70px', height: '145px', width: '200px', borderRadius: '10px' }}>
                                     <h1>Step</h1>
                                     <p>Increase to enhance quality. </p>
-                                    <h1 style={{marginTop:'3px'}}>Scale</h1>
+                                    <h1 style={{ marginTop: '3px' }}>Scale</h1>
                                     <p>Scale controls how much the image generation process follow the prompts</p>
                                 </div>
                             }
@@ -404,12 +502,12 @@ const ImageGeneratorAdvanced = () => {
                         </div>
 
                         <div className="IGA_promt_seed">
-                            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <p>Seed</p>
-                                <BsFillPatchQuestionFill style={{marginRight:'15px'}} size={16} className='question' onMouseEnter={() => appear(6)} onMouseLeave={() => disappear(6)}/>
+                                <BsFillPatchQuestionFill style={{ marginRight: '15px' }} size={16} className='question' onMouseEnter={() => appear(6)} onMouseLeave={() => disappear(6)} />
                             </div>
-                            {dis[5] && 
-                                <div className='IGA_promt_model_div' style={{position:'absolute', left:'430px', boxShadow:'0 0 10px rgba(0,0,0,0.2)',zIndex:'1000' , marginTop:'-70px', height:'145px', width:'200px', borderRadius:'10px'}}>
+                            {dis[5] &&
+                                <div className='IGA_promt_model_div' style={{ position: 'absolute', left: '430px', boxShadow: '0 0 10px rgba(0,0,0,0.2)', zIndex: '1000', marginTop: '-70px', height: '145px', width: '200px', borderRadius: '10px' }}>
                                     <h1>Seeds</h1>
                                     <p>Different numbers result in new variations of your image</p>
                                 </div>
@@ -421,12 +519,12 @@ const ImageGeneratorAdvanced = () => {
                         </div>
 
                         <div className="IGA_promt_sampler">
-                            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <p style={{ marginBottom: '5px' }}>Sampler</p>
-                                <BsFillPatchQuestionFill size={16} className='question' onMouseEnter={() => appear(7)} onMouseLeave={() => disappear(7)}/>
+                                <BsFillPatchQuestionFill size={16} className='question' onMouseEnter={() => appear(7)} onMouseLeave={() => disappear(7)} />
                             </div>
-                            {dis[6] && 
-                                <div className='IGA_promt_model_div' style={{position:'absolute', left:'430px', boxShadow:'0 0 10px rgba(0,0,0,0.2)',zIndex:'1000' , marginTop:'-70px', height:'145px', width:'200px', borderRadius:'10px'}}>
+                            {dis[6] &&
+                                <div className='IGA_promt_model_div' style={{ position: 'absolute', left: '430px', boxShadow: '0 0 10px rgba(0,0,0,0.2)', zIndex: '1000', marginTop: '-70px', height: '145px', width: '200px', borderRadius: '10px' }}>
                                     <h1>Sampler</h1>
                                     <p>Sampler gives you deeper control over the generation process to achieve slightly different details</p>
                                 </div>
@@ -437,7 +535,9 @@ const ImageGeneratorAdvanced = () => {
                         <div className="IGA_promt_generate">
                             <p> Credits</p>
 
-                            <div className="IGA_promt_generate_button" onClick={() => { imageGenerator() }}>
+                            {/* <div className="IGA_promt_generate_button" onClick={() => { imageGenerator() }}> */}
+                            <div className="IGA_promt_generate_button" onClick={handleSubmit}>
+
                                 Create {imageNumber} images
                             </div>
                         </div>
@@ -447,7 +547,7 @@ const ImageGeneratorAdvanced = () => {
                         {!isUpload ? (
                             <div className="image_preview">
                                 {/* <LensBlurIcon sx={{ scale: '500%', paddingBottom: '20px' }}></LensBlurIcon> */}
-                                <img src='/gener/loader.gif'/>
+                                <img src='/gener/loader.gif' />
                                 <div className="create">Created images will appear here</div>
                                 <div className="looklike">Looks like you haven't created anything yet!</div>
                                 <div className="looklike">Click the button below to copy a sample prompt and then click 'Create'.</div>
@@ -473,35 +573,35 @@ const ImageGeneratorAdvanced = () => {
                                 {isFinal ? (
                                     <>
 
-                                        <Box sx={{ width: '100%', height: '100%', display:'flex', alignItems:'center', flexDirection:'column'}}>
+                                        <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
 
 
-                                            <Box display="flex" justifyContent="space-between" alignItems="center" sx={{marginTop:'20px'}}>
+                                            <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ marginTop: '20px' }}>
                                                 <Box display="flex">
                                                     {/* <IconButton sx={{color:'#C209C1'}}>
                                                         <FirstPageIcon/>
                                                     </IconButton> */}
-                                                    <h1 style={{fontSize:'18px'}}><b>Prompt:&#160; </b></h1>
-                                                    <Typography sx={{ alignSelf: 'center', paddingRight:'25px' }} >{inputRef.current.value}</Typography>
+                                                    <h1 style={{ fontSize: '18px' }}><b>Prompt:&#160; </b></h1>
+                                                    <Typography sx={{ alignSelf: 'center', paddingRight: '25px' }} >{inputRef.current.value}</Typography>
 
                                                 </Box>
 
                                                 <Box display='flex'>
-                                                    <IconButton sx={{color:'#C209C1'}}>
+                                                    {/* <IconButton sx={{ color: '#C209C1' }}>
                                                         <ContentCopyIcon />
                                                     </IconButton>
                                                     <Typography sx={{ alignSelf: 'center', paddingRight: '25px' }}>
-                                                        {model ? originalModel[model].title : selectedModel.title}
-                                                    </Typography>
+                                                        {selected ? originalModel[model].title : selectedModel.title}
+                                                    </Typography> */}
 
 
-                                                    <PhotoLibraryIcon sx={{ alignSelf: 'center', paddingRight: '5px', color:'#C209C1' }} />
+                                                    <PhotoLibraryIcon sx={{ alignSelf: 'center', paddingRight: '5px', color: '#C209C1' }} />
                                                     <Typography sx={{ alignSelf: 'center', paddingRight: '25px' }}>
                                                         {imageNumber}
                                                     </Typography>
 
 
-                                                    <FullscreenExitIcon sx={{ alignSelf: 'center', paddingRight: '5px', color:'#C209C1' }} />
+                                                    <FullscreenExitIcon sx={{ alignSelf: 'center', paddingRight: '5px', color: '#C209C1' }} />
                                                     <Typography sx={{ alignSelf: 'center', paddingRight: '25px' }}>
                                                         {label}
                                                     </Typography>
@@ -513,179 +613,179 @@ const ImageGeneratorAdvanced = () => {
                                                 </Box>
                                             </Box>
                                             <Grid container sx={{ justifyContent: 'center' }}>
-                                            {imageUrl.length === 1 && (
-                                                <Grid item xs={12} sx={{alignItems:'center', display:'flex', justifyContent:'center'}}>
-                                                    { (height === 512 && width === 512) && 
-                                                        <Box sx={{position: 'relative', width: '50%', height: 'auto', backgroundColor: '#1E1E1E'}}>
-                                                            <img src={imageUrl[0]}
-                                                            style={{
-                                                                position: 'absolute',
-                                                                width: '100%',
-                                                                border: '1px solid #C209C1',
-                                                                objectFit: 'cover',
-                                                                marginTop:'50px'
-                                                            }}
-                                                            onClick={() => handleDownload(imageUrl[0])}
-                                                            className='img'
-                                                            />
-                                                        </Box>
-                                                    }
-                                                    { (height === 768 && width === 512) && 
-                                                        <Box sx={{position: 'relative', width: '40%', height: 'auto', backgroundColor: '#1E1E1E'}}>
-                                                            <img src={imageUrl[0]}
-                                                            style={{
-                                                                position: 'absolute',
-                                                                width: '100%',
-                                                                border: '1px solid #C209C1',
-                                                                objectFit: 'cover',
-                                                                marginTop:'50px'
-                                                            }}
-                                                            onClick={() => handleDownload(imageUrl[0])}
-                                                            className='img'
-                                                            />
-                                                        </Box>
-                                                    }
-                                                    { (height === 512 && width === 768) && 
-                                                        <Box sx={{position: 'relative', width: '70%', height: 'auto', backgroundColor: '#1E1E1E'}}>
-                                                            <img src={imageUrl[0]}
-                                                            style={{
-                                                                position: 'absolute',
-                                                                width: '100%',
-                                                                border: '1px solid #C209C1',
-                                                                objectFit: 'cover',
-                                                                marginTop:'50px'
-                                                            }}
-                                                            onClick={() => handleDownload(imageUrl[0])}
-                                                            className='img'
-                                                            />
-                                                        </Box>
-                                                    }
-                                                </Grid>
-                                            )}
+                                                {imageUrl.length === 1 && (
+                                                    <Grid item xs={12} sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+                                                        {(height === 512 && width === 512) &&
+                                                            <Box sx={{ position: 'relative', width: '50%', height: 'auto', backgroundColor: '#1E1E1E' }}>
+                                                                <img src={imageUrl[0]}
+                                                                    style={{
+                                                                        position: 'absolute',
+                                                                        width: '100%',
+                                                                        border: '1px solid #C209C1',
+                                                                        objectFit: 'cover',
+                                                                        marginTop: '50px'
+                                                                    }}
+                                                                    onClick={() => handleDownload(imageUrl[0])}
+                                                                    className='img'
+                                                                />
+                                                            </Box>
+                                                        }
+                                                        {(height === 768 && width === 512) &&
+                                                            <Box sx={{ position: 'relative', width: '40%', height: 'auto', backgroundColor: '#1E1E1E' }}>
+                                                                <img src={imageUrl[0]}
+                                                                    style={{
+                                                                        position: 'absolute',
+                                                                        width: '100%',
+                                                                        border: '1px solid #C209C1',
+                                                                        objectFit: 'cover',
+                                                                        marginTop: '50px'
+                                                                    }}
+                                                                    onClick={() => handleDownload(imageUrl[0])}
+                                                                    className='img'
+                                                                />
+                                                            </Box>
+                                                        }
+                                                        {(height === 512 && width === 768) &&
+                                                            <Box sx={{ position: 'relative', width: '70%', height: 'auto', backgroundColor: '#1E1E1E' }}>
+                                                                <img src={imageUrl[0]}
+                                                                    style={{
+                                                                        position: 'absolute',
+                                                                        width: '100%',
+                                                                        border: '1px solid #C209C1',
+                                                                        objectFit: 'cover',
+                                                                        marginTop: '50px'
+                                                                    }}
+                                                                    onClick={() => handleDownload(imageUrl[0])}
+                                                                    className='img'
+                                                                />
+                                                            </Box>
+                                                        }
+                                                    </Grid>
+                                                )}
 
-                                            {imageUrl.length === 2 && (
-                                                imageUrl.map((image, index) => (
-                                                <Grid item xs={6} key={index} sx={{alignItems:'center', display:'flex', justifyContent:'center'}}>
-                                                    {(height === 512 && width === 512) && 
-                                                        <Box sx={{ position: 'relative', width: '80%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E'}}>
-                                                        <img
-                                                            src={image}
-                                                            style={{
-                                                            position: 'absolute',
-                                                            width: '100%',
-                                                            borderRadius: 10,
-                                                            border: '1px solid #C209C1',
-                                                            objectFit: 'cover',
-                                                            marginTop:'100px'
-                                                            }}
-                                                            onClick={() => handleDownload(image)}
-                                                            className='img'
-                                                        />
-                                                        </Box>
-                                                    }
-                                                    {(height === 768 && width === 512) && 
-                                                        <Box sx={{ position: 'relative', width: '70%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E'}}>
-                                                        <img
-                                                            src={image}
-                                                            style={{
-                                                            position: 'absolute',
-                                                            width: '100%',
-                                                            borderRadius: 10,
-                                                            border: '1px solid #C209C1',
-                                                            objectFit: 'cover',
-                                                            marginTop:'50px'
-                                                            }}
-                                                            onClick={() => handleDownload(image)}
-                                                            className='img'
-                                                        />
-                                                        </Box>
-                                                    }
-                                                    {(height === 512 && width === 768) && 
-                                                        <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E'}}>
-                                                        <img
-                                                            src={image}
-                                                            style={{
-                                                            position: 'absolute',
-                                                            top: 0,
-                                                            left: 0,
-                                                            width: '100%',
-                                                            borderRadius: 10,
-                                                            border: '1px solid #C209C1',
-                                                            objectFit: 'cover',
-                                                            marginTop:'130px'
-                                                            }}
-                                                            onClick={() => handleDownload(image)}
-                                                            className='img'
-                                                        />
-                                                        </Box>
-                                                    }
-                                                </Grid>
-                                                ))
-                                            )}
+                                                {imageUrl.length === 2 && (
+                                                    imageUrl.map((image, index) => (
+                                                        <Grid item xs={6} key={index} sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+                                                            {(height === 512 && width === 512) &&
+                                                                <Box sx={{ position: 'relative', width: '80%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
+                                                                    <img
+                                                                        src={image}
+                                                                        style={{
+                                                                            position: 'absolute',
+                                                                            width: '100%',
+                                                                            borderRadius: 10,
+                                                                            border: '1px solid #C209C1',
+                                                                            objectFit: 'cover',
+                                                                            marginTop: '100px'
+                                                                        }}
+                                                                        onClick={() => handleDownload(image)}
+                                                                        className='img'
+                                                                    />
+                                                                </Box>
+                                                            }
+                                                            {(height === 768 && width === 512) &&
+                                                                <Box sx={{ position: 'relative', width: '70%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
+                                                                    <img
+                                                                        src={image}
+                                                                        style={{
+                                                                            position: 'absolute',
+                                                                            width: '100%',
+                                                                            borderRadius: 10,
+                                                                            border: '1px solid #C209C1',
+                                                                            objectFit: 'cover',
+                                                                            marginTop: '50px'
+                                                                        }}
+                                                                        onClick={() => handleDownload(image)}
+                                                                        className='img'
+                                                                    />
+                                                                </Box>
+                                                            }
+                                                            {(height === 512 && width === 768) &&
+                                                                <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
+                                                                    <img
+                                                                        src={image}
+                                                                        style={{
+                                                                            position: 'absolute',
+                                                                            top: 0,
+                                                                            left: 0,
+                                                                            width: '100%',
+                                                                            borderRadius: 10,
+                                                                            border: '1px solid #C209C1',
+                                                                            objectFit: 'cover',
+                                                                            marginTop: '130px'
+                                                                        }}
+                                                                        onClick={() => handleDownload(image)}
+                                                                        className='img'
+                                                                    />
+                                                                </Box>
+                                                            }
+                                                        </Grid>
+                                                    ))
+                                                )}
 
-                                            {imageUrl.length === 3 && (
-                                                imageUrl.map((image, index) => (
-                                                <Grid item xs={4} key={index} sx={{alignItems:'center', display:'flex', justifyContent:'center'}}>
-                                                    {(height === 512 && width === 512) &&
-                                                        <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E'}}>
-                                                        <img
-                                                            src={image}
-                                                            style={{
-                                                            position: 'absolute',
-                                                            top: 0,
-                                                            left: 0,
-                                                            width: '100%',
-                                                            borderRadius: 10,
-                                                            border: '1px solid #C209C1',
-                                                            objectFit: 'cover',
-                                                            marginTop:'130px'
-                                                            }}
-                                                            onClick={() => handleDownload(image)}
-                                                            className='img'
-                                                        />
-                                                        </Box>
-                                                    }
-                                                    {(height === 768 && width === 512) &&
-                                                        <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E'}}>
-                                                        <img
-                                                            src={image}
-                                                            style={{
-                                                            position: 'absolute',
-                                                            top: 0,
-                                                            left: 0,
-                                                            width: '100%',
-                                                            borderRadius: 10,
-                                                            border: '1px solid #C209C1',
-                                                            objectFit: 'cover',
-                                                            marginTop:'80px'
-                                                            }}
-                                                            onClick={() => handleDownload(image)}
-                                                            className='img'
-                                                        />
-                                                        </Box>
-                                                    }
-                                                    {(height === 512 && width === 768) &&
-                                                        <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E'}}>
-                                                        <img
-                                                            src={image}
-                                                            style={{
-                                                            position: 'absolute',
-                                                            top: 0,
-                                                            left: 0,
-                                                            width: '100%',
-                                                            borderRadius: 10,
-                                                            border: '1px solid #C209C1',
-                                                            objectFit: 'cover',
-                                                            marginTop:'100px'
-                                                            }}
-                                                            onClick={() => handleDownload(image)}
-                                                            className='img'
-                                                        />
-                                                        </Box>
-                                                    }
-                                                </Grid>
-                                                ))
-                                            )}
+                                                {imageUrl.length === 3 && (
+                                                    imageUrl.map((image, index) => (
+                                                        <Grid item xs={4} key={index} sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+                                                            {(height === 512 && width === 512) &&
+                                                                <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
+                                                                    <img
+                                                                        src={image}
+                                                                        style={{
+                                                                            position: 'absolute',
+                                                                            top: 0,
+                                                                            left: 0,
+                                                                            width: '100%',
+                                                                            borderRadius: 10,
+                                                                            border: '1px solid #C209C1',
+                                                                            objectFit: 'cover',
+                                                                            marginTop: '130px'
+                                                                        }}
+                                                                        onClick={() => handleDownload(image)}
+                                                                        className='img'
+                                                                    />
+                                                                </Box>
+                                                            }
+                                                            {(height === 768 && width === 512) &&
+                                                                <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
+                                                                    <img
+                                                                        src={image}
+                                                                        style={{
+                                                                            position: 'absolute',
+                                                                            top: 0,
+                                                                            left: 0,
+                                                                            width: '100%',
+                                                                            borderRadius: 10,
+                                                                            border: '1px solid #C209C1',
+                                                                            objectFit: 'cover',
+                                                                            marginTop: '80px'
+                                                                        }}
+                                                                        onClick={() => handleDownload(image)}
+                                                                        className='img'
+                                                                    />
+                                                                </Box>
+                                                            }
+                                                            {(height === 512 && width === 768) &&
+                                                                <Box sx={{ position: 'relative', width: '90%', height: 'auto', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
+                                                                    <img
+                                                                        src={image}
+                                                                        style={{
+                                                                            position: 'absolute',
+                                                                            top: 0,
+                                                                            left: 0,
+                                                                            width: '100%',
+                                                                            borderRadius: 10,
+                                                                            border: '1px solid #C209C1',
+                                                                            objectFit: 'cover',
+                                                                            marginTop: '100px'
+                                                                        }}
+                                                                        onClick={() => handleDownload(image)}
+                                                                        className='img'
+                                                                    />
+                                                                </Box>
+                                                            }
+                                                        </Grid>
+                                                    ))
+                                                )}
                                             </Grid>
 
                                         </Box>
